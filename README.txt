@@ -1,6 +1,6 @@
 James Matthew Welch (Matt)
 CSE310
-Section Number: TODO
+Section Number: 71409
 Language: C++
 Compilation instructions: 
 	Navigate to the directory containing the source code and Makefile.  Type "make" at the shell prompt
@@ -9,8 +9,7 @@ Compilation instructions:
 
 #end README
 
-
-README TODO::
+TODO::
 You program should be well documented. At the start of each function, you should inform the
 reader what this function is about and what algorithm(s) you are using.
 

@@ -66,14 +66,27 @@ int main()
 			break;
 		case 'W':
 			// write out a RBTree to the screen in pre-order
-			cout << endl <<"A tree has been written to the screen, isn't it pretty??" << endl;
-			cout << "b, 5; r, 1; r 10;" << endl;
+			if(tree == NULL){
+				cout << endl <<"No tree exists yet, you should make one first..." << endl;
+			}else {
+				cout << endl <<"A tree has been written to the screen, isn't it pretty??" << endl;
+				cout << tree->RBWrite(tree->GetRoot()) << endl;
+			}
 			break;
 		case 'I':
-			cout << endl <<"A new node with the value ?? has been inserted into the tree" << endl;
+			if(tree == NULL){
+				cout << endl <<"No tree exists yet, you should make one first..." << endl;
+			}else {
+				cout << endl <<"A new node with the value ?? has been inserted into the tree" << endl;
+			}
 			break;
 		case 'D':
-			cout << endl <<"The node containing the value ?? has been deleted" << endl;
+
+			if(tree == NULL){
+				cout << endl <<"No tree exists yet, you should make one first..." << endl;
+			}else {
+				cout << endl <<"The node containing the value ?? has been deleted" << endl;
+			}
 			break;
 		case 'S':
 			cout << endl <<"Stopping the Red-Black Tree program..." << endl;
