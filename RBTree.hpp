@@ -23,15 +23,20 @@ class RBTree {
 public:
 	RBTree();
 	~RBTree();
-	void 	RBWrite();
-	RBTree* RBRead();
-	RBTree* RBInsert(int key);
+	RBNode* GetRoot();
 	RBNode* RBDelete(int key);
+	RBTree* RBInsert(int key);
+	RBTree* RBRead();
+	RBNode* RBSearch(RBNode *traverse, int key);
+	RBNode* RBSuccessor(RBNode *x);
+	RBNode*	TreeMin(RBNode *x);
+	RBNode*	TreeMax(RBNode *x);
+	string 	RBWrite(RBNode *myRoot);
 protected:
 	RBNode 	*_root;
 	RBNode 	*_nil;
-	void 	InsertFixup(RBNode *x);
 	void 	DeleteFixup(RBNode *x);
+	void 	InsertFixup(RBNode *x);
 	void 	LeftRotate(RBNode *x);
 	void 	RightRotate(RBNode *x);
 	RBNode*	RBTransplant(RBNode *u, RBNode *v);
