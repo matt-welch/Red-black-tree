@@ -24,10 +24,12 @@
 #include <stdint.h>
 #include <string>
 #include <iostream>
+#include <fstream>
 
 using std::cout;
 using std::endl;
 using std::cin;
+using std::ifstream;
 
 
 int main()
@@ -38,8 +40,10 @@ int main()
 
 	int continueFlag = 1;
 	char choice;
-	string fileName = "RBInput.txt";
+	string inFileName = "RBInput.txt";
 	RBTree *tree;
+	ifstream infile;
+	stringstream inFileStream;
 
 	do{
 		cout << endl << "Hello User, What would you like to do with Red-Black Trees?" << endl;
@@ -62,7 +66,20 @@ int main()
 			break;
 		case 'R':
 			// read in a RBTree from RBinput.txt
-			cout << endl <<"A tree has been read in from the file \"" << fileName << "\"." << endl;
+			infile.open(inFileName.c_str());//2nd arg: ifstream::in
+
+			if(infile.fail()){
+				cout << endl <<"An error occurred while reading from the file \""
+						<< inFileName << "\"." << endl;}
+			else{
+				// pull RBTree data from file, send to RBTree-Build function??
+				while (infile.good() && !infile.eof() ){
+					inFileStream << infile.get();
+				}
+				// infile >> char >> int; // another way to read in
+				infile.close();
+				cout << endl <<"A tree has been read in from the file \"" <<
+						inFileName << "\"." << endl;}
 			break;
 		case 'W':
 			// write out a RBTree to the screen in pre-order
@@ -104,3 +121,23 @@ int main()
 	return 0;
 }
 
+#if 0
+// "Magic Formula" for formatting cout & outFile streams
+cout.setf(ios::fixed)	         outFile.setf(ios::fixed)
+cout.setf(ios::showpoint)	     outFile.setf(ios::showpoint)
+cout.precision(2)		         outFile.precision(2)
+cout.setf(ios::right);
+cout.width(6);
+
+//Short cut to call a formatting function.
+outFile.setf(ios::right);
+outFile << setw(4) << hours << setw(6) << rate;
+//need  #include <iomanip>
+
+//To get one character including white space use get.
+	cin.get(char);
+//To get entire line up to the newline use getline.
+	cin.getline(char, intSize);
+//To put out one character use put.
+	cout.put(char);
+#endif
