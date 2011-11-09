@@ -36,6 +36,8 @@ protected:
 	RBNode 	*_root;
 	RBNode 	*_nil;
 	void 	DeleteFixup(RBNode *x);
+	RBNode* DeleteFixupLeft(RBNode *x);
+	RBNode* DeleteFixupRight(RBNode *x);
 	void 	InsertFixup(RBNode *x);
 	void 	LeftRotate(RBNode *x);
 	void 	RightRotate(RBNode *x);

@@ -135,9 +135,21 @@ outFile << setw(4) << hours << setw(6) << rate;
 //need  #include <iomanip>
 
 //To get one character including white space use get.
-	cin.get(char);
+cin.get(char);
 //To get entire line up to the newline use getline.
-	cin.getline(char, intSize);
+cin.getline(char, intSize);
 //To put out one character use put.
-	cout.put(char);
-#endif
+cout.put(char);
+// check a-z
+isalpha(char);
+// check 0-9
+isdigit(char);
+//check whitespace
+isspace(char);
+// (checks for uppercase)
+isupper(char);
+// (checks for lowercase)
+islower(char);
+tolower(char);
+toupper (char);
+	#endif
