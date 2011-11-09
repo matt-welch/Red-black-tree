@@ -44,6 +44,7 @@ RBNode* RBTree::RBDelete(int key){
 	RBNode *x;
 	RBNode *y;
 	RBNode *z = RBSearch(this->_root, key);
+
 	if(z == NULL){ return NULL; }// key is not found in tree
 
 	y = z;								//1 temp pointer set to "trouble node"
@@ -74,6 +75,7 @@ RBNode* RBTree::RBDelete(int key){
 		DeleteFixup(x);					//22 run fixup if y was black
 	return x;
 }
+
 void RBTree::DeleteFixup(RBNode *x){
 	RBNode *w;
 	while(x != _root && x->GetColor() == BLACK){	//1
@@ -82,7 +84,7 @@ void RBTree::DeleteFixup(RBNode *x){
 			if(w->GetColor() == RED){				//4
 				w->SetColor(BLACK);					//5 case 1
 				x->_parent->SetColor(BLACK);		//6 case 1
-				LeftRotate(x->_parent);				//7 case 1
+				this->LeftRotate(x->_parent);				//7 case 1
 				w = x->_parent->_rchild;}			//8 case 1
 			if(w->_lchild->GetColor() == BLACK && w->_rchild->GetColor() == BLACK){	//9		if(w.left.color == BLACK && w.right.color == BLACK)
 				w->SetColor(RED);					//10 case 2
@@ -90,14 +92,13 @@ void RBTree::DeleteFixup(RBNode *x){
 			} else if(w->_rchild->GetColor() == BLACK) { //12
 				w->_lchild->SetColor(BLACK);		//13 case 3
 				w->SetColor(RED);					//14 case 3
-				RightRotate(w);						//15 case 3
+				this->RightRotate(w);						//15 case 3
 				w = x->_parent->_rchild;			//16 case 3
 			}
 			w->SetColor(x->_parent->GetColor());	//17 case 4
 			x->_parent->SetColor(BLACK);			//18 case 4
 			w->_rchild->SetColor(BLACK);			//19 case 4
-			LeftRotate(x->_parent);					//20		LEFT-ROTATE(T,x.p)	// case 4
-			x = _root;								//21		x=T.root
+			this->LeftRotate(x->_parent);					//20		LEFT-ROTATE(T,x.p)	// case 4
 		} else if (x == x->_parent->_rchild){//	22	else if( x == x.p.right )
 			w = x->_parent->_lchild;				//3		w = x.p.left
 			if(w->GetColor() == RED){				//4		if w.color == RED
@@ -119,11 +120,60 @@ void RBTree::DeleteFixup(RBNode *x){
 			x->_parent->SetColor(BLACK);			//18		x.p.color = BLACK		// case 4
 			w->_lchild->SetColor(BLACK);			//19		w.left.color = BLACK	// case 4
 			this->RightRotate(x->_parent);			//20		RIGHT-ROTATE(T,x.p)		// case 4
-			x = this->_root;						//21		x=T.root
 		}
+		x = this->_root;								//21		x=T.root
 		x->SetColor(BLACK);							//23 x.color = BLACK
 	}
 }
+
+RBNode* RBTree::DeleteFixupLeft(RBNode *x){
+	RBNode *w;
+	w = x->_parent->_rchild;				//3
+	if(w->GetColor() == RED){				//4
+		w->SetColor(BLACK);					//5 case 1
+		x->_parent->SetColor(BLACK);		//6 case 1
+		this->LeftRotate(x->_parent);				//7 case 1
+		w = x->_parent->_rchild;}			//8 case 1
+	if(w->_lchild->GetColor() == BLACK && w->_rchild->GetColor() == BLACK){	//9		if(w.left.color == BLACK && w.right.color == BLACK)
+		w->SetColor(RED);					//10 case 2
+		x = x->_parent;						//11 case 2
+	} else if(w->_rchild->GetColor() == BLACK) { //12
+		w->_lchild->SetColor(BLACK);		//13 case 3
+		w->SetColor(RED);					//14 case 3
+		this->RightRotate(w);						//15 case 3
+		w = x->_parent->_rchild;			//16 case 3
+	}
+	w->SetColor(x->_parent->GetColor());	//17 case 4
+	x->_parent->SetColor(BLACK);			//18 case 4
+	w->_rchild->SetColor(BLACK);			//19 case 4
+	this->LeftRotate(x->_parent);					//20		LEFT-ROTATE(T,x.p)	// case 4
+	return x;
+}
+RBNode* RBTree::DeleteFixupRight(RBNode *x){
+	RBNode *w;
+	w = x->_parent->_lchild;				//3		w = x.p.left
+	if(w->GetColor() == RED){				//4		if w.color == RED
+		w->SetColor(BLACK);					//5			w.color = BLACK	// case 1
+		x->_parent->SetColor(RED);			//6			x.p.color = RED	// case 1
+		this->RightRotate(x->_parent);		//7			RIGHT-ROTATE(T,x.p)	// case 1
+		w = x->_parent->_lchild;			//8			w = x.p.left		// case 1
+	}
+	if(w->_rchild->GetColor()==BLACK && w->_lchild->GetColor() == BLACK){//	9		if(w.right.color == BLACK && w.left.color == BLACK)
+		w->SetColor(RED);					//10			w.color = RED // case 2
+		x = x->_parent;						//11			x = x.p		  // case 2
+	} else if (w->_lchild->GetColor() == BLACK){//	12		else if w.left.color == BLACK
+		w->_rchild->SetColor(BLACK);		//13			w.right.color = BLACK // case 3
+		w->SetColor(RED);					//14			w.color = RED		// case 3
+		this->LeftRotate(w);				//15			LEFT-ROTATE(T, w)	// case 3
+		w = x->_parent->_lchild;			//16			w = x.p.left		// case 3
+	}
+	w->SetColor(x->_parent->GetColor());	//17		w.color = x.p.color		// case 4
+	x->_parent->SetColor(BLACK);			//18		x.p.color = BLACK		// case 4
+	w->_lchild->SetColor(BLACK);			//19		w.left.color = BLACK	// case 4
+	this->RightRotate(x->_parent);			//20		RIGHT-ROTATE(T,x.p)		// case 4
+	return x;
+}
+
 
 RBNode* RBTree::GetRoot(){
 	return this->_root;
@@ -156,7 +206,6 @@ RBTree* RBTree::RBInsert(int key){
 
 // fixup the tree after insertion
 void RBTree::InsertFixup(RBNode *z){
-//	RB-INSERT-FIXUP(y)
 	RBNode *y;
 	while(z->_parent->GetColor() == RED){			//1 while (z.p.color == RED) {
 		if(z->_parent == z->_parent->_parent->_lchild){	//2 	if z.p === z.p.p.left
