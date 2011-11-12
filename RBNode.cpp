@@ -6,6 +6,10 @@
  */
 
 #include "RBNode.hpp"
+#include <iostream>
+#include <string>
+using std::cout;
+using std::string;
 
 // create an empty RBNode
 RBNode::RBNode(){
@@ -26,22 +30,58 @@ RBNode::RBNode(int data){
 	_color = RED;
 }
 
-// create a RBNode with the supplied Color value
-RBNode::RBNode(RBNode *copyMyColor){
-	_key = -1;
+// create a RBNode with the supplied int data value and Color color value
+RBNode::RBNode(int data, Color pColor){
+	_key = data;
 	_parent = NULL;
 	_lchild = NULL;
 	_rchild = NULL;
-	_color = copyMyColor->_color;
+	_color = pColor;
+}
+
+// create a RBNode with the supplied int data value
+RBNode::RBNode(Color pColor){
+	_key 	= -1;
+	_parent = NULL;
+	_lchild = NULL;
+	_rchild = NULL;
+	_color 	= pColor;
+}
+
+// create a RBNode with the supplied Color value
+RBNode::RBNode(RBNode *copyMyColor){
+	_key 	= -1;
+	_parent = NULL;
+	_lchild = NULL;
+	_rchild = NULL;
+	_color 	= copyMyColor->_color;
 }
 
 // create a RBNode with the supplied data, parent, lchild, and rchild references
 RBNode::RBNode(int data, RBNode *parent, RBNode *lchild, RBNode *rchild){
-	_key = data;
+	_key 	= data;
 	_parent = parent;
 	_lchild = lchild;
 	_rchild = rchild;
-	_color = RED;
+	_color 	= RED;
+};
+
+// create a RBNode with the supplied data, parent, lchild, rchild, pColor references
+RBNode::RBNode(int data, RBNode *parent, RBNode *lchild, RBNode *rchild, Color pColor){
+	_key 	= data;
+	_parent = parent;
+	_lchild = lchild;
+	_rchild = rchild;
+	_color 	= pColor;
+};
+
+// create a RBNode with the supplied color, parent, lchild, and rchild references
+RBNode::RBNode(RBNode *parent, RBNode *lchild, RBNode *rchild){
+	_key 	= -1;
+	_parent = parent;
+	_lchild = lchild;
+	_rchild = rchild;
+	_color 	= BLACK;
 };
 
 //RBNode destructor
@@ -55,16 +95,17 @@ int RBNode::GetKey(){
 }
 
 // create a string representation of the node (e.g. r,10 )
-string RBNode::ToString(){
+void RBNode::ToString(){
 	//TODO _key should be converted to from an int to a string
-	stringstream s;
+	char colorChar;
+//	string strOut;
 	if(_color == RED)
-		s << "r,";
+		colorChar = 'r';
 	else
-		s << "b,";
-	s << _key;
-	string strOut = s.str();
-	return (strOut);
+		colorChar = 'b';
+//	strOut = colorChar + ", ";
+//	return strOut;
+	//TODO anytime string/cout/stringstream is implemented here, seg faults occur
 }
 
 // set method for _color

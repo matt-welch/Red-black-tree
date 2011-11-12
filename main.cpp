@@ -19,31 +19,37 @@
  * S	stop program
 
  */
+//#define DEBUG
+
 #include "RBTree.hpp"
 //#include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <string>
+
 #include <iostream>
 #include <fstream>
+using std::ifstream;
 
 using std::cout;
 using std::endl;
 using std::cin;
-using std::ifstream;
 
-
-int main()
-{
-	// print a welcome message
-	// ask the user what they want to do (while loop)
-	// 		switch statement inside the while loop to choose actions
+int main(){
 
 	int continueFlag = 1;
 	char choice;
-	string inFileName = "RBInput.txt";
-	RBTree *tree;
+
+	RBTree* tree;
 	ifstream infile;
-	stringstream inFileStream;
+	string inFileName = "RBinput.txt";
+	int maxNodes = 100;
+	Color colors[maxNodes];
+	int data[maxNodes];
+	int numNodes = 0;
+	string token;
+
+	for(int i=0;i<maxNodes;++i){ colors[i]=RED;data[i]=-1; }
 
 	do{
 		cout << endl << "Hello User, What would you like to do with Red-Black Trees?" << endl;
@@ -58,46 +64,95 @@ int main()
 		cin >> choice;
 
 		switch(choice){
-		case 'C':
-			// create a new RBTree
+		case 'C': // create a new RBTree
 			tree = new RBTree();
-			if(!tree){cout << endl <<"A new tree has been created" << endl;}
+			if(tree){cout << endl <<"A new tree has been created" << endl;}
 			else{cout << endl << "A problem occurred when creating your tree..." << endl;}
 			break;
-		case 'R':
-			// read in a RBTree from RBinput.txt
-			infile.open(inFileName.c_str());//2nd arg: ifstream::in
+
+		case 'R': // read in a RBTree from RBinput.txt
+			// use a char instead
+			infile.open((char*)inFileName.c_str()); //2nd arg: ifstream::in
 
 			if(infile.fail()){
 				cout << endl <<"An error occurred while reading from the file \""
 						<< inFileName << "\"." << endl;}
 			else{
-				// pull RBTree data from file, send to RBTree-Build function??
+				// create a new tree if one does not exist
+				if(!tree){ tree = new RBTree(); }
+
+				// pull RBTree data from file
 				while (infile.good() && !infile.eof() ){
-					inFileStream << infile.get();
+					infile >> token;
+					if(!token.empty()) {
+						colors[numNodes] = ( (token[0] == 'r') ? RED : BLACK );
+
+#ifdef DEBUG
+						cout << "colorStr: " << token[0];
+						cout << "||char: " << colors[numNodes];
+#endif
+					}
+					infile >> token;
+					if(!token.empty()) {
+						data[numNodes] = atoi(token.c_str());
+#ifdef DEBUG
+						cout <<"||dataStr: " << token << "||data: "<< data[numNodes] << endl;
+#endif
+						++numNodes;
+					}
+					token = "";
 				}
-				// infile >> char >> int; // another way to read in
 				infile.close();
-				cout << endl <<"A tree has been read in from the file \"" <<
-						inFileName << "\"." << endl;}
+
+				cout << endl <<"A tree has been read in from the file \"" << inFileName << "\"." << endl;
+				// now put the data into the tree in pre-order format
+				int index = tree->RBInsertFromList(data, colors, numNodes);
+				//int index = tree->RBCreateFromList(data, colors, numNodes);
+				/*if(index < numNodes) {
+					exit(1);
+					cout << "We lost " << (numNodes-index) << " nodes!!!!!" << endl;
+				}*/
+				if(index < numNodes){
+					cout << "Some nodes were lost during read..." << endl;
+					exit(1);
+				}
+			}
+
 			break;
-		case 'W':
-			// write out a RBTree to the screen in pre-order
+
+		case 'W': // write out a RBTree to the screen in pre-order
 			if(tree == NULL){
 				cout << endl <<"No tree exists yet, you should make one first..." << endl;
 			}else {
+				tree->RBWrite(tree->GetRoot());
 				cout << endl <<"A tree has been written to the screen, isn't it pretty??" << endl;
-				cout << tree->RBWrite(tree->GetRoot()) << endl;
 			}
 			break;
+
 		case 'I':
-			if(tree == NULL){
+			/* On reading I n, the program
+			inserts a new node with data n into the current red-black tree and perform the corresponding
+			fixes, and waits for the next command. Insertion is only performed when there is no node in
+			the tree with data field equal to n. When there is already such a node, your program should
+			print out a line ”node already in the tree” and wait for the next command. */
+			int data;
+			cin >> data;
+
+			if(!tree->IsValid()){
 				cout << endl <<"No tree exists yet, you should make one first..." << endl;
 			}else {
-				cout << endl <<"A new node with the value ?? has been inserted into the tree" << endl;
+				if(data < 0){
+					cout << "Only insert positive integers please...(" << data << ")" << endl;
+				}else {
+					if(tree->RBInsert(data)){
+						cout << endl <<"A new node with the value " << data << " has been inserted into the tree" << endl;
+					}
+				}
 			}
 			break;
-		case 'D':
+
+		case 'D':// input: D n
+			// delete the node with data value matching 'n'
 
 			if(tree == NULL){
 				cout << endl <<"No tree exists yet, you should make one first..." << endl;
@@ -110,6 +165,7 @@ int main()
 			continueFlag = 0;
 			// clean everything up here
 			break;
+
 		default:
 			cout << endl <<"The requested option, \"" << choice << "\" is not a valid selection, try again..." << endl;
 			break;
@@ -120,6 +176,16 @@ int main()
 	cout << endl << endl << "Thanks for using Red-Black Trees! Goodbye!" << endl << endl;
 	return 0;
 }
+
+#if 0
+// C-style file open
+static FILE *_file_open(char *filename, char *mode, char *msg) {
+    FILE *fstream = fopen(filename, mode);
+    if (fstream) return fstream;
+    fprintf(stdout, "Cannot open '%s' for %s. Terminating.\n", filename, msg);
+    exit(-1); /* Declared in <stdlib.h> */
+}
+#endif
 
 #if 0
 // "Magic Formula" for formatting cout & outFile streams
