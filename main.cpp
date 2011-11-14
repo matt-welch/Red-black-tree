@@ -21,6 +21,9 @@
  */
 //#define DEBUG
 
+// TODO comment everything
+// TODO clean up output
+
 #include "RBTree.hpp"
 #include <stdlib.h>
 #include <stdint.h>
@@ -143,6 +146,8 @@ int main(){
 				}else {
 					if(tree->RBTree::RBInsert(key)){
 						cout << endl <<"A new node with the value " << key << " has been inserted into the tree" << endl;
+					}else {
+						cout << endl <<"A node containing value \"" << key << "\" is already in the tree" << endl;
 					}
 				}
 			}
@@ -158,11 +163,16 @@ int main(){
 				if(key < 0){
 					cout << "Only delete positive integers please...(" << key << ")" << endl;
 				}else {
-					RBNode *delNode = tree->RBTree::Delete(key);
-					if(!delNode || delNode->GetKey() != key)
-						cout << "An error occurred while deleting \"" << key << "\"." << endl;
-					else
+					int delKey = tree->RBTree::Delete(key);
+					if(delKey == -1){
+						cout << "No node containing the key \"" << key << "\" was found in the tree." << endl;
+					}else if ( delKey != key){
+						// this should never happen
+						cout << "A node containing data value \"" << delKey << "\" was found in the tree." << endl;
+						cout << "This node should not have been deleted from the tree" << endl;
+					}else{
 						cout << endl <<"A node with the value \"" << key << "\" has been deleted from the tree" << endl;
+					}
 				}
 			}
 			break;

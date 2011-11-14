@@ -15,7 +15,7 @@ public:
 	DLList();
 	~DLList();
 	bool 	IsEmpty();
-	void 	Add(DLNode *newNode);
+	void 	Add(RBNode *deletedNode);
 	DLNode* Remove();
 protected:
 	DLNode 	*_head;

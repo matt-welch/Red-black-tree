@@ -87,6 +87,10 @@ void RBNode::SetColor(Color newColor){
 		{_color = newColor;}
 }
 
+void RBNode::SetKey(int pKey){
+	_key = pKey;
+}
+
 string RBNode::ToString(){
 	/*  stringbuf sb;
   string mystr;
