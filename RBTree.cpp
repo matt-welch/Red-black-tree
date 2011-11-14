@@ -106,9 +106,15 @@ void RBTree::BSTInsert(int key, Color color){
 	z->_rchild = this->_nil;			// set rchild as nil
 }
 
-RBNode* RBTree::Delete(int key){
+int RBTree::Delete(int key){
 	RBNode *delNode = RBDelete(key);
-	return delNode;
+	int delKey = delNode->GetKey();
+	this->RecycleNode(delNode);
+	return delKey;
+}
+
+void RBTree::RecycleNode(RBNode *x){
+	_store->Add(x);
 }
 
 // delete a node from the tree given its data
@@ -219,7 +225,18 @@ RBNode* RBTree::DeleteFixupRight(RBNode *x){
 
 // insert a new node into the tree given its data
 RBTree* RBTree::RBInsert(int key){
-	RBNode *z = NewRBNode(key);
+
+	if(this->RBSearch(_root, key) != _nil){
+		return NULL;
+	}
+	RBNode *z;
+	if(this->_store->IsEmpty()){
+		z = NewRBNode(key);
+	}else {
+		z = this->_store->Remove()->_data;
+		z->SetKey(key);
+		z->SetColor(BLACK);
+	}
 
 	RBNode *y = this->_nil;		//1 		y = T.nil
 	RBNode *x = this->_root;	//2 		x = T.root
@@ -456,231 +473,4 @@ void RBTree::Write(RBNode *myRoot){
 	Write(myRoot->_rchild);
 }
 
-// pseudocode
-/*
-Inorder-Tree-Walk(x)
-if x != nil then
-     Inorder-Tree-Walk(x.left)  //left[x]
-     print(x.data)		//data[x]
-     Inorder-Tree-Walk(x.right)  //right[x]
 
-Preorder-Tree-Walk(x)
-if x != nil then
-     print(x.data)
-     Preorder-Tree-Walk(x.left)
-     Preorder-Tree-Walk(x.right)
-*/
-
-#if 0
-// TODO unused
-int RBTree::RBInsertFromList(int list[], Color colors[], const int numNodes){
-	_size = 0;
-	_root = new RBNode(list[_size], _nil, _nil, _nil, BLACK);
-	_size++;
-	while(_size < numNodes){
-		RBInsert(list[_size]);
-		_size++;
-	}
-	return _size;
-}
-
-int RBTree::RBCreateFromList(int list[], Color colors[], const int numNodes){
-	int index = 0;
-	int key, parentKey;
-	Color newColor;
-	_size = 0;
-	_root = new RBNode(list[index], _nil, _nil, _nil, colors[index]);
-	index++;
-	_size++;
-	RBNode  *traverse = _root;
-	while(index < (numNodes-1)){
-		key = list[index];
-		parentKey = traverse->GetKey();
-		newColor = colors[index];
-
-		if(key < parentKey){
-			// key < parent
-			index = RBAttachLeft(key, traverse, newColor, index);
-			traverse = traverse->_lchild;
-		}else {
-			// key > parent here
-			if(traverse->_parent == this->_nil){
-				// special case, traverse = root, don't look further up
-				index = RBAttachRight(key, traverse, newColor, index);
-				traverse = traverse->_rchild;
-			}else {
-				int grandpaKey = traverse->_parent->GetKey();
-				if(key < grandpaKey){
-					//key>parentKey && key < grandpaKey, attach @ traverse
-					index = RBAttachRight(key, traverse, newColor, index);
-					traverse = traverse->_rchild;
-				}else if(key > grandpaKey) {
-					traverse = traverse->_parent;
-				}
-			}
-		}
-	}
-	return index;
-}
-
-void RBTree::DeleteFixup(RBNode *x){
-	RBNode *w;
-	while(x != _root && x->GetColor() == BLACK){	//1
-		if(x == x->_parent->_lchild){				//2
-			w = x->_parent->_rchild;				//3
-			if(w->GetColor() == RED){				//4
-				w->SetColor(BLACK);					//5 case 1
-				x->_parent->SetColor(BLACK);		//6 case 1
-				this->LeftRotate(x->_parent);		//7 case 1
-				w = x->_parent->_rchild;}			//8 case 1
-			if(w->_lchild->GetColor() == BLACK && w->_rchild->GetColor() == BLACK){	//9		if(w.left.color == BLACK && w.right.color == BLACK)
-				w->SetColor(RED);					//10 case 2
-				x = x->_parent;						//11 case 2
-			} else if(w->_rchild->GetColor() == BLACK) { //12
-				w->_lchild->SetColor(BLACK);		//13 case 3
-				w->SetColor(RED);					//14 case 3
-				this->RightRotate(w);				//15 case 3
-				w = x->_parent->_rchild;			//16 case 3
-			}
-			w->SetColor(x->_parent->GetColor());	//17 case 4
-			x->_parent->SetColor(BLACK);			//18 case 4
-			w->_rchild->SetColor(BLACK);			//19 case 4
-			this->LeftRotate(x->_parent);					//20		LEFT-ROTATE(T,x.p)	// case 4
-		} else if (x == x->_parent->_rchild){//	22	else if( x == x.p.right )
-			w = x->_parent->_lchild;				//3		w = x.p.left
-			if(w->GetColor() == RED){				//4		if w.color == RED
-				w->SetColor(BLACK);					//5			w.color = BLACK	// case 1
-				x->_parent->SetColor(RED);			//6			x.p.color = RED	// case 1
-				this->RightRotate(x->_parent);		//7			RIGHT-ROTATE(T,x.p)	// case 1
-				w = x->_parent->_lchild;			//8			w = x.p.left		// case 1
-			}
-			if(w->_rchild->GetColor()==BLACK && w->_lchild->GetColor() == BLACK){//	9		if(w.right.color == BLACK && w.left.color == BLACK)
-				w->SetColor(RED);					//10			w.color = RED // case 2
-				x = x->_parent;						//11			x = x.p		  // case 2
-			} else if (w->_lchild->GetColor() == BLACK){//	12		else if w.left.color == BLACK
-				w->_rchild->SetColor(BLACK);		//13			w.right.color = BLACK // case 3
-				w->SetColor(RED);					//14			w.color = RED		// case 3
-				this->LeftRotate(w);				//15			LEFT-ROTATE(T, w)	// case 3
-				w = x->_parent->_lchild;			//16			w = x.p.left		// case 3
-			}
-			w->SetColor(x->_parent->GetColor());	//17		w.color = x.p.color		// case 4
-			x->_parent->SetColor(BLACK);			//18		x.p.color = BLACK		// case 4
-			w->_lchild->SetColor(BLACK);			//19		w.left.color = BLACK	// case 4
-			this->RightRotate(x->_parent);			//20		RIGHT-ROTATE(T,x.p)		// case 4
-		}
-		x = this->_root;							//21		x=T.root
-		x->SetColor(BLACK);							//23 x.color = BLACK
-	}
-}
-
-int RBTree::RBAttachLeft(int key, RBNode *parent, Color newColor, int index){
-	RBNode *newNode = new RBNode(key, parent, _nil, _nil, newColor);
-	parent->_lchild = newNode;
-	index++;
-	this->_size++;
-#ifdef DEBUG
-		cout << "L:" << key << ", P:" << parent->GetKey() << ", size: " << _size << endl;
-#endif
-	return index;
-}
-
-int RBTree::RBAttachRight(int key, RBNode *parent, Color newColor, int index){
-	RBNode *newNode = new RBNode(key, parent, _nil, _nil, newColor);
-	parent->_rchild = newNode;
-	index++;
-	this->_size++;
-#ifdef DEBUG
-		cout << "R:" << key << ", P:" << parent->GetKey() << ", size: " << _size << endl;
-#endif
-	return index;
-}
-
-
-// create an RBTree from data in pre-order format
-int RBTree::RBCreate(int data[], Color colors[]){
-	// assumes no tree exists and we want to directly attach all of the nodes in the list
-	int index = 0;
-	_size = 0;
-	_root = new RBNode(data[index], _nil, _nil, _nil, colors[index]);
-	index++;
-	_size++;
-#ifdef DEBUG
-		cout << "root:" << _root->GetKey() <<", P: _nil, size: " << _size << endl;
-#endif
-	index = AttachTree(_root, index, data, colors);
-	return index;
-}
-
-int RBTree::AttachIterative(RBNode *parent, int index, int list[], Color colors[]){
-	// root gets handles by parent fcn
-	int key = list[index];
-	if(parent == NULL){ return -1;}// error condition, this shouldn't happen
-	traverse = parent;
-	while(index < this->_size){
-		int parentKey = parent->GetKey();
-		if(key < parentKey){//go left
-			index = AttachTreeLeft(parent, index, list, colors);
-		}else {
-			// key must be >= parentKey beyond here
-
-			if(parent->_parent == this->_nil)
-			{	// when inserting as child of root
-				// attach to right since @ root
-				index = AttachTreeRight(parent, index, list, colors);
-			}else
-			{
-				while(parent)
-				// key > parentKey & not @ root
-				int grandpaKey = parent->_parent->GetKey();
-				if(key < grandpaKey){
-					//key>parentKey && key < grandpaKey
-					index = AttachTreeRight(parent, index, list, colors);
-				}else if(key > grandpaKey) {
-					index = AttachTreeRight(parent->_parent, index, list, colors);
-				}
-			}
-		}
-	}
-	return index;
-}
-int RBTree::AttachTreeLeft(RBNode *parent, int index, int list[], Color colors[]){
-	// attach data to left subtree of provided parent
-	int parentKey = parent->GetKey();
-	int key = list[index];
-	if(key < parentKey){
-		// go until a value is found that's greater than the parent -> belongs in right tree
-		parent->_lchild = new RBNode(key, parent, _nil, _nil, colors[index]);
-		parent->_lchild->_parent = parent;
-		index++;
-		_size++;
-#ifdef DEBUG
-		cout << "L:" << parent->_lchild->GetKey() << ", P:" << parent->GetKey() << ", size: " << _size << endl;
-#endif
-		index = AttachTreeLeft(parent->_lchild, index, list, colors);
-	}
-	else{// need to go up to grandparent, since key > parentKey
-		index = AttachTreeRight(parent->_parent, index, list, colors);
-	}
-	return index;
-}
-
-int RBTree::AttachTreeRight(RBNode *parent, int index, int list[], Color colors[]){
-	// attach data to right subtree of provided parent
-	int parentKey = parent->GetKey();
-	int key = list[index];
-	if(key > parentKey){
-		// go until a value is found that's less than the parent -> belongs in left tree
-		parent->_rchild = new RBNode(key, parent, _nil, _nil, colors[index]);
-		parent->_rchild->_parent = parent;
-		index++;
-		_size++;
-#ifdef DEBUG
-		cout << "R:" << parent->_rchild->GetKey() << ", P:" << parent->GetKey() << ", size: " << _size << endl;
-#endif
-		index = AttachTreeRight(parent->_rchild, index, list, colors);
-	} else {// need to go up to grandparent, since key > parentKey
-		index = AttachTreeLeft(parent->_parent, index, list, colors);
-	}
-	return index;
-}
-#endif

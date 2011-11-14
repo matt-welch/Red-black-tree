@@ -44,7 +44,7 @@
 </toolChain>
 </folderInfo>
 <sourceEntries>
-<entry excluding="README.txt" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+<entry excluding="RBTreefcns.cpp.txt|README.txt" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 </sourceEntries>
 </configuration>
 </storageModule>
@@ -508,7 +508,7 @@
 </toolChain>
 </folderInfo>
 <sourceEntries>
-<entry excluding="README.txt" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+<entry excluding="RBTreefcns.cpp.txt|README.txt" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 </sourceEntries>
 </configuration>
 </storageModule>

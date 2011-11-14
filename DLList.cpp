@@ -44,7 +44,8 @@ bool DLList::IsEmpty(){
 
 
 // adds a new node to the end of the list
-void DLList::Add(DLNode *newNode){
+void DLList::Add(RBNode *deletedNode){
+	DLNode *newNode = new DLNode(deletedNode);
 	if(_size==0){
 		_head = newNode;
 		_tail = newNode;

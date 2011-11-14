@@ -26,7 +26,7 @@ public:
 	int		GetSize(){return _size;}
 	bool	IsValid(){return _valid;}
 	void 	BSTInsert(int key, Color color);
-	RBNode* Delete(int key);
+	int		Delete(int key);
 	RBTree* RBInsert(int key);
 	int		RBInsertFromList(int list[], Color colors[], int numNodes);
 	RBNode* RBSearch(RBNode *traverse, int key);
@@ -48,6 +48,7 @@ protected:
 	void 	LeftRotate(RBNode *x);
 	void 	RightRotate(RBNode *x);
 	RBNode*	RBTransplant(RBNode *u, RBNode *v);
+	void	RecycleNode(RBNode *x);
 	void	Write(RBNode* myRoot);
 	int		_size;
 	DLList* _store;
