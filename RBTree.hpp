@@ -50,6 +50,7 @@ protected:
 	RBNode*	RBTransplant(RBNode *u, RBNode *v);
 	void	RecycleNode(RBNode *x);
 	void	Write(RBNode* myRoot);
+	void 	RBFreeTree(RBNode *myRoot);
 	int		_size;
 	DLList* _store;
 	bool	_valid;

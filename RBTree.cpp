@@ -46,10 +46,30 @@ RBTree::RBTree(){
 
 //RBTree destructor
 RBTree::~RBTree(){
-	//TODO function is incomplete
 	// clear store out
+	DLNode *temp;
+	while(!_store->IsEmpty()){
+		// delete garbage nodes form the store
+		temp = _store->Remove();
+		delete(temp->_data);
+		delete(temp);
+	}
+	delete(_store);
+
 	// clear out all nodes in tree
-	free(_store);
+	RBFreeTree(_root);
+	delete(_nil);
+}
+
+void RBTree::RBFreeTree(RBNode *myRoot){
+	// recursively traverse the tree, deleting nodes on the way down
+	RBNode *Left = myRoot->_lchild;
+	RBNode *Right = myRoot->_rchild;
+	if(myRoot != _nil) {
+		delete(myRoot);
+		RBFreeTree(Left);
+		RBFreeTree(Right);
+	}
 }
 
 int RBTree::RBInsertFromList(int list[], Color colors[], const int numNodes){

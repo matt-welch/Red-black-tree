@@ -7,19 +7,7 @@
 
 #include "DLList.hpp"
 
-/*// Doubly Linked List to hold "deleted" values
-class DLList {
-public:
-	DLList();
-	~DLList();
-	bool 	IsEmpty();
-	void 	Add(DLNode *newNode);
-	DLNode* Remove();
-protected:
-	DLNode 	*_head;
-	DLNode 	*_tail;
-	int 	_size;
-};*/
+/* Doubly Linked List to hold "deleted" values */
 
 // Doubly Linked List to hold "deleted" values: function definitions
 DLList::DLList(){
@@ -41,7 +29,6 @@ bool DLList::IsEmpty(){
 	}
 	return false;
 }
-
 
 // adds a new node to the end of the list
 void DLList::Add(RBNode *deletedNode){
