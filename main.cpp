@@ -1,3 +1,15 @@
+/********************************************************************************************
+ * Red-Black Tree Driver:
+ * AUTHOR: 	James Matthew Welch [JMW]
+ * CLASS:	CSE310
+ * SECTION:	71409
+ *
+ * All Red-Black Tree methods, when possible, are adapted from pseudocode provided in
+ * _Introduction_to_Algorithms_ (Cormen, Leiserson, Rivest & Stein)
+ ********************************************************************************************/
+
+
+
 /*
  * main.cpp
  *
@@ -30,13 +42,14 @@
 #include <string>
 
 #include <iostream>
-#include <fstream>
-using std::ifstream;
-
 using std::cout;
 using std::endl;
 using std::cin;
 
+#include <fstream>
+using std::ifstream;
+
+// beginning of Red-Black Tree driver
 int main(){
 
 	int continueFlag = 1;
@@ -52,10 +65,11 @@ int main(){
 	int numNodes = 0;
 	string token;
 
-	for(int i=0;i<maxNodes;++i){ colors[i]=RED;data[i]=-1; }
+	cout << endl << ":::Red-Black Tree:::" << endl;
+	cout << "Welcome to the Red-Black Tree program!!" << endl;
 
 	do{
-		cout << endl << "Hello User, What would you like to do with Red-Black Trees?" << endl;
+		cout << endl << "Choose which option you would like to perform with Red-Black Trees." << endl;
 		cout << "Here are your choices: " << endl <<
 				"(C)reate a new list (C)" << endl <<
 				"(R)ead in a Red-Black Tree from RBInput.txt (R)" << endl <<
@@ -74,6 +88,12 @@ int main(){
 			break;
 
 		case 'R': // read in a RBTree from RBinput.txt
+			//initialize color and data arrays
+			for(int i=0;i<maxNodes;++i){
+				colors[i]=RED;
+				data[i]=-1;
+			}
+
 			// use a char instead
 			infile.open((char*)inFileName.c_str()); //2nd arg: ifstream::in
 
@@ -82,12 +102,15 @@ int main(){
 						<< inFileName << "\"." << endl;}
 			else{
 				// create a new tree if one does not exist
-				if(!tree){
+				if(tree){
+					//TODO: if a tree already exists, delete it and make a new one
+				}else{
 					tree = new RBTree();
 				}
 
 				// pull RBTree data from file
 				while (infile.good() && !infile.eof() ){
+					// parse color and key tokens from theinput file
 					infile >> token;
 					if(!token.empty()) {
 						colors[numNodes] = ( (token[0] == 'r') ? RED : BLACK );
@@ -126,7 +149,7 @@ int main(){
 				cout << endl <<"No tree exists yet, you should make one first..." << endl;
 			}else {
 				tree->RBTree::RBWrite();
-				cout << endl <<"A tree has been written to the screen, isn't it pretty??" << endl;
+				cout << endl <<"A Red-Black tree has been written to the screen in pre-order format." << endl;
 			}
 			break;
 
@@ -181,6 +204,7 @@ int main(){
 			cout << endl <<"Stopping the Red-Black Tree program..." << endl;
 			continueFlag = 0;
 			// clean everything up here
+			delete tree;
 			break;
 
 		default:
@@ -193,46 +217,3 @@ int main(){
 	cout << endl << endl << "Thanks for using Red-Black Trees! Goodbye!" << endl << endl;
 	return 0;
 }
-
-#if 0
-// C-style file open
-static FILE *_file_open(char *filename, char *mode, char *msg) {
-    FILE *fstream = fopen(filename, mode);
-    if (fstream) return fstream;
-    fprintf(stdout, "Cannot open '%s' for %s. Terminating.\n", filename, msg);
-    exit(-1); /* Declared in <stdlib.h> */
-}
-#endif
-
-#if 0
-// "Magic Formula" for formatting cout & outFile streams
-cout.setf(ios::fixed)	         outFile.setf(ios::fixed)
-cout.setf(ios::showpoint)	     outFile.setf(ios::showpoint)
-cout.precision(2)		         outFile.precision(2)
-cout.setf(ios::right);
-cout.width(6);
-
-//Short cut to call a formatting function.
-outFile.setf(ios::right);
-outFile << setw(4) << hours << setw(6) << rate;
-//need  #include <iomanip>
-
-//To get one character including white space use get.
-cin.get(char);
-//To get entire line up to the newline use getline.
-cin.getline(char, intSize);
-//To put out one character use put.
-cout.put(char);
-// check a-z
-isalpha(char);
-// check 0-9
-isdigit(char);
-//check whitespace
-isspace(char);
-// (checks for uppercase)
-isupper(char);
-// (checks for lowercase)
-islower(char);
-tolower(char);
-toupper (char);
-	#endif
