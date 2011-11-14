@@ -2,10 +2,7 @@
  * This source code file comprises the implementation of a RedBlack Binary tree.
  *
  * RedBlack Tree Operations:
- * 		RB-Fixup
- * 		rotate
- * 		colorSwap
- *		RBWrite (write out the current red-black tree to the screen, where the tree is stored in a pre-order format)
+ *		RBwrite (write out the current red-black tree to the screen, where the tree is stored in a pre-order format)
  * 		RBread (read in a red-black tree from a file named RBinput.txt, where the tree is stored in a pre-order format)
  *		RBinsert (insert a new node with the data field given as a parameter of the function and perform the fix-up if necessary)
  *		RBdelete (delete the node whose data field matches the data given as a parameter of the function, and perform the fix-up if necessary)
@@ -55,11 +52,5 @@ protected:
 	DLList* _store;
 	bool	_valid;
 };
-#if 0
-int		RBCreateFromList(int list[], Color colors[], int numNodes);
-void 	DeleteFixup(RBNode *x);
-int		RBAttachLeft(int key, RBNode *parent, Color newColor, int index);
-int		RBAttachRight(int key, RBNode *parent, Color newColor, int index);
 
-#endif
 #endif /* __RBTREE_H__ */
