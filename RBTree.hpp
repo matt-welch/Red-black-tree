@@ -22,36 +22,42 @@ class RBTree {
 public:
 	RBTree();
 	~RBTree();
-	RBNode* GetRoot();
+	RBNode* GetRoot(){return _root;}
 	int		GetSize(){return _size;}
-	bool	IsValid();
+	bool	IsValid(){return _valid;}
 	void 	BSTInsert(int key, Color color);
-	int		RBCreateFromList(int list[], Color colors[], int numNodes);
-	RBNode* RBDelete(int key);
+	RBNode* Delete(int key);
 	RBTree* RBInsert(int key);
 	int		RBInsertFromList(int list[], Color colors[], int numNodes);
-	RBTree* RBRead();
 	RBNode* RBSearch(RBNode *traverse, int key);
 	RBNode* RBSuccessor(RBNode *x);
 	RBNode*	TreeMin(RBNode *x);
 	RBNode*	TreeMax(RBNode *x);
-	void 	RBWrite(RBNode *myRoot);
+	void 	RBWrite();
 protected:
 	RBNode 	*_root;
 	RBNode 	*_nil;
-	void 	DeleteFixup(RBNode *x);
-	void 	DeleteFixupLeft(RBNode *x);
-	void	DeleteFixupRight(RBNode *x);
-	void 	DeleteFixupSmall(RBNode*);
+	RBNode* NewRBNode(Name pNilName);
+	RBNode* NewRBNode(int pKey);
+	RBNode* NewRBNode(int pKey, Color pColor);
+	RBNode* RBDelete(int pKey);
+	RBNode* DeleteFixupLeft(RBNode *x);
+	RBNode*	DeleteFixupRight(RBNode *x);
+	RBNode*	DeleteFixupSmall(RBNode*);
 	void 	InsertFixup(RBNode *x);
 	void 	LeftRotate(RBNode *x);
 	void 	RightRotate(RBNode *x);
-	int		RBAttachLeft(int key, RBNode *parent, Color newColor, int index);
-	int		RBAttachRight(int key, RBNode *parent, Color newColor, int index);
 	RBNode*	RBTransplant(RBNode *u, RBNode *v);
+	void	Write(RBNode* myRoot);
 	int		_size;
 	DLList* _store;
 	bool	_valid;
 };
+#if 0
+int		RBCreateFromList(int list[], Color colors[], int numNodes);
+void 	DeleteFixup(RBNode *x);
+int		RBAttachLeft(int key, RBNode *parent, Color newColor, int index);
+int		RBAttachRight(int key, RBNode *parent, Color newColor, int index);
 
+#endif
 #endif /* __RBTREE_H__ */

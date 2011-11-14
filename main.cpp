@@ -22,7 +22,6 @@
 //#define DEBUG
 
 #include "RBTree.hpp"
-//#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string>
@@ -40,12 +39,13 @@ int main(){
 	int continueFlag = 1;
 	char choice;
 
-	RBTree* tree;
+	RBTree* tree = new RBTree();
 	ifstream infile;
 	string inFileName = "RBinput.txt";
 	int maxNodes = 100;
 	Color colors[maxNodes];
 	int data[maxNodes];
+	int key;
 	int numNodes = 0;
 	string token;
 
@@ -79,7 +79,9 @@ int main(){
 						<< inFileName << "\"." << endl;}
 			else{
 				// create a new tree if one does not exist
-				if(!tree){ tree = new RBTree(); }
+				if(!tree){
+					tree = new RBTree();
+				}
 
 				// pull RBTree data from file
 				while (infile.good() && !infile.eof() ){
@@ -106,12 +108,8 @@ int main(){
 
 				cout << endl <<"A tree has been read in from the file \"" << inFileName << "\"." << endl;
 				// now put the data into the tree in pre-order format
-				int index = tree->RBInsertFromList(data, colors, numNodes);
-				//int index = tree->RBCreateFromList(data, colors, numNodes);
-				/*if(index < numNodes) {
-					exit(1);
-					cout << "We lost " << (numNodes-index) << " nodes!!!!!" << endl;
-				}*/
+				int index = tree->RBTree::RBInsertFromList(data, colors, numNodes);
+
 				if(index < numNodes){
 					cout << "Some nodes were lost during read..." << endl;
 					exit(1);
@@ -124,7 +122,7 @@ int main(){
 			if(tree == NULL){
 				cout << endl <<"No tree exists yet, you should make one first..." << endl;
 			}else {
-				tree->RBWrite(tree->GetRoot());
+				tree->RBTree::RBWrite();
 				cout << endl <<"A tree has been written to the screen, isn't it pretty??" << endl;
 			}
 			break;
@@ -135,17 +133,16 @@ int main(){
 			fixes, and waits for the next command. Insertion is only performed when there is no node in
 			the tree with data field equal to n. When there is already such a node, your program should
 			print out a line ”node already in the tree” and wait for the next command. */
-			int data;
-			cin >> data;
+			cin >> key;
 
-			if(!tree->IsValid()){
+			if(!tree->RBTree::IsValid()){
 				cout << endl <<"No tree exists yet, you should make one first..." << endl;
 			}else {
-				if(data < 0){
-					cout << "Only insert positive integers please...(" << data << ")" << endl;
+				if(key < 0){
+					cout << "Only insert positive integers please...(" << key << ")" << endl;
 				}else {
-					if(tree->RBInsert(data)){
-						cout << endl <<"A new node with the value " << data << " has been inserted into the tree" << endl;
+					if(tree->RBTree::RBInsert(key)){
+						cout << endl <<"A new node with the value " << key << " has been inserted into the tree" << endl;
 					}
 				}
 			}
@@ -153,13 +150,23 @@ int main(){
 
 		case 'D':// input: D n
 			// delete the node with data value matching 'n'
+			cin >> key;
 
-			if(tree == NULL){
+			if(!tree->RBTree::IsValid()){
 				cout << endl <<"No tree exists yet, you should make one first..." << endl;
 			}else {
-				cout << endl <<"The node containing the value ?? has been deleted" << endl;
+				if(key < 0){
+					cout << "Only delete positive integers please...(" << key << ")" << endl;
+				}else {
+					RBNode *delNode =tree->RBTree::Delete(key);
+					if(!delNode || delNode->GetKey() != key)
+						cout << "An error occurred while deleting \"" << key << "\"." << endl;
+					else
+						cout << endl <<"A node with the value \"" << key << "\" has been deleted from the tree" << endl;
+				}
 			}
 			break;
+
 		case 'S':
 			cout << endl <<"Stopping the Red-Black Tree program..." << endl;
 			continueFlag = 0;

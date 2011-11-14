@@ -9,6 +9,7 @@
 #define __RBNODE_H__
 
 typedef enum {RED, BLACK} Color;
+typedef enum {NIL, DATA} Name;
 #include <string>
 #include <cstring>
 #include <sstream>
@@ -19,27 +20,23 @@ using std::string;
 class RBNode {
 public:
 	RBNode();
-	RBNode(int key);
-	RBNode(int key, Color pColor);
-	RBNode(Color pColor);
-	RBNode(RBNode *copyMyColor);
-	RBNode(int key, RBNode *parent, RBNode *lchild, RBNode *rchild);
-	RBNode(int key, RBNode *parent, RBNode *lchild, RBNode *rchild, Color pColor);
-	RBNode(RBNode *parent, RBNode *lchild, RBNode *rchild);
+	RBNode(int pKey);//1
+	RBNode(Name pNilName);// only used when creating NIL nodes
+	RBNode(int pKey, Color pColor);//2
+	RBNode(int pKey, RBNode *pParent, RBNode *pLchild, RBNode *pRchild, Color pColor);//3
 	~RBNode();
 	RBNode 	*_parent; // ptr to parent RBNode
 	RBNode 	*_lchild; // ptr to left child RBNode
 	RBNode 	*_rchild; // ptr to right child RBNode
-	void	ChangeColor(RBNode *copyNode); // copy the color of a given node
-	void	ColorSwap(RBNode *y); // swap colors with incoming node
-	void	ColorToggle(); // changes a node's color to opposite (R->B, B->R)
+	void	ColorSwap(RBNode *y); //2 swap colors with incoming node
 	Color 	GetColor();// accessor method for _color;
 	int 	GetKey();// accessor method for _key;
 	void 	SetColor(Color newColor); // set method for _color
-	void 	ToString(); // returns the node color and data value for a node (e.g. "r,10")
+	string 	ToString(); // returns the node color and data value for a node (e.g. "r,10")
 protected:
 	int	 	_key;	 // integer data field
 	Color	_color;	 // enum color field (RED/BLACK)
+	Name	_name;	// enum name field to distinguish _nil
 };
 // inclusion guard for __RBNODE_H__
 #endif
