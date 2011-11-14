@@ -165,24 +165,24 @@ RBNode* RBTree::DeleteFixupLeft(RBNode *x){
 	if(w->GetColor() == RED){				//4
 		w->SetColor(BLACK);					//5 case 1
 		x->_parent->SetColor(RED);			//6 case 1
-		this->LeftRotate(x->_parent);		//7 case 1
+		LeftRotate(x->_parent);		//7 case 1
 		w = x->_parent->_rchild;}			//8 case 1
-	if(w->_lchild->GetColor() == BLACK &&
-			w->_rchild->GetColor() == BLACK){	//9		if(w.left.color == BLACK && w.right.color == BLACK)
+	if(w->_lchild->GetColor() == BLACK &&		//9		if(w.left.color == BLACK && w.right.color == BLACK)
+			w->_rchild->GetColor() == BLACK){
 		w->SetColor(RED);					//10 case 2
 		x = x->_parent;						//11 case 2
 	} else {
 		if(w->_rchild->GetColor() == BLACK) { //12
-			w->_lchild->SetColor(BLACK);		//13 case 3
-			w->SetColor(RED);					//14 case 3
-			this->RightRotate(w);				//15 case 3
+			w->_lchild->SetColor(BLACK);	//13 case 3
+			w->SetColor(RED);				//14 case 3
+			RightRotate(w);					//15 case 3
 			w = x->_parent->_rchild;			//16 case 3
 		}
-		w->SetColor(x->_parent->GetColor());	//17 case 4
-		x->_parent->SetColor(BLACK);			//18 case 4
-		w->_rchild->SetColor(BLACK);			//19 case 4
-		this->LeftRotate(x->_parent);			//20 LEFT-ROTATE(T,x.p)	// case 4
-		x = this->_root;						//21		x=T.root
+		w->SetColor(x->_parent->GetColor());//17 case 4
+		x->_parent->SetColor(BLACK);		//18 case 4
+		w->_rchild->SetColor(BLACK);		//19 case 4
+		LeftRotate(x->_parent);				//20 LEFT-ROTATE(T,x.p)	// case 4
+		x = _root;							//21		x=T.root
 	}
 	return x;
 }
@@ -193,26 +193,26 @@ RBNode* RBTree::DeleteFixupRight(RBNode *x){
 	if(w->GetColor() == RED){				//4		if w.color == RED
 		w->SetColor(BLACK);					//5			w.color = BLACK	// case 1
 		x->_parent->SetColor(RED);			//6			x.p.color = RED	// case 1
-		this->RightRotate(x->_parent);		//7			RIGHT-ROTATE(T,x.p)	// case 1
+		RightRotate(x->_parent);			//7			RIGHT-ROTATE(T,x.p)	// case 1
 		w = x->_parent->_lchild;			//8			w = x.p.left		// case 1
 	}
-	if(w->_rchild->GetColor()==BLACK &&
-			w->_lchild->GetColor() == BLACK){//	9		if(w.right.color == BLACK && w.left.color == BLACK)
+	if(w->_rchild->GetColor()==BLACK &&		//	9		if(w.right.color == BLACK && w.left.color == BLACK)
+			w->_lchild->GetColor() == BLACK)
+	{
 		w->SetColor(RED);					//10			w.color = RED // case 2
 		x = x->_parent;						//11			x = x.p		  // case 2
 	} else {
 		if (w->_lchild->GetColor() == BLACK){//	12		else if w.left.color == BLACK
-
-			w->_rchild->SetColor(BLACK);		//13			w.right.color = BLACK // case 3
-			w->SetColor(RED);					//14			w.color = RED		// case 3
-			this->LeftRotate(w);				//15			LEFT-ROTATE(T, w)	// case 3
-			w = x->_parent->_lchild;			//16			w = x.p.left		// case 3
+			w->_rchild->SetColor(BLACK);	//13			w.right.color = BLACK // case 3
+			w->SetColor(RED);				//14			w.color = RED		// case 3
+			LeftRotate(w);					//15			LEFT-ROTATE(T, w)	// case 3
+			w = x->_parent->_lchild;		//16			w = x.p.left		// case 3
 		}
-		w->SetColor(x->_parent->GetColor());	//17		w.color = x.p.color		// case 4
-		x->_parent->SetColor(BLACK);			//18		x.p.color = BLACK		// case 4
-		w->_lchild->SetColor(BLACK);			//19		w.left.color = BLACK	// case 4
-		this->RightRotate(x->_parent);			//20		RIGHT-ROTATE(T,x.p)		// case 4
-		x = this->_root;						//21		x=T.root
+		w->SetColor(x->_parent->GetColor());//17		w.color = x.p.color		// case 4
+		x->_parent->SetColor(BLACK);		//18		x.p.color = BLACK		// case 4
+		w->_lchild->SetColor(BLACK);		//19		w.left.color = BLACK	// case 4
+		RightRotate(x->_parent);			//20		RIGHT-ROTATE(T,x.p)		// case 4
+		x = _root;							//21		x=T.root
 	}
 	return x;
 }
@@ -373,10 +373,10 @@ RBNode* RBTree::RBTransplant(RBNode *u,RBNode *v){
 	} else if(u == u->_parent->_lchild){//3: u is left child
 		u->_parent->_lchild = v;		//4: 	set v to lchild
 	} else {
-		u->_parent->_lchild = v;		//5: else set v to rchild
+		u->_parent->_rchild = v;		//5: else set v to rchild
 	}
 	v->_parent = u->_parent;			//6: set parent
-	return u;
+	return v;
 }
 
 // find the successor (next in sequence) of a given node
