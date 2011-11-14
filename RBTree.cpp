@@ -63,9 +63,10 @@ RBTree::~RBTree(){
 
 void RBTree::RBFreeTree(RBNode *myRoot){
 	// recursively traverse the tree, deleting nodes on the way down
-	RBNode *Left = myRoot->_lchild;
-	RBNode *Right = myRoot->_rchild;
 	if(myRoot != _nil) {
+		RBNode *Left = myRoot->_lchild;
+		RBNode *Right = myRoot->_rchild;
+
 		delete(myRoot);
 		RBFreeTree(Left);
 		RBFreeTree(Right);
@@ -128,9 +129,12 @@ void RBTree::BSTInsert(int key, Color color){
 
 int RBTree::Delete(int key){
 	RBNode *delNode = RBDelete(key);
-	int delKey = delNode->GetKey();
-	this->RecycleNode(delNode);
-	return delKey;
+	if(delNode){
+		int delKey = delNode->GetKey();
+		this->RecycleNode(delNode);
+		return delKey;
+	}
+	return -1;
 }
 
 void RBTree::RecycleNode(RBNode *x){
@@ -246,7 +250,7 @@ RBNode* RBTree::DeleteFixupRight(RBNode *x){
 // insert a new node into the tree given its data
 RBTree* RBTree::RBInsert(int key){
 
-	if(this->RBSearch(_root, key) != _nil){
+	if(_root != _nil && this->RBSearch(_root, key) != _nil){
 		return NULL;
 	}
 	RBNode *z;

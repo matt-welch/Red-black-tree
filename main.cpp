@@ -82,6 +82,12 @@ int main(){
 
 		switch(choice){
 		case 'C': // create a new RBTree
+			// create a new tree if one does not exist
+			if(tree){
+				//if a tree already exists, delete it
+				delete tree;
+			}
+
 			tree = new RBTree();
 			if(tree){cout << endl <<"A new tree has been created" << endl;}
 			else{cout << endl << "A problem occurred when creating your tree..." << endl;}
@@ -103,10 +109,12 @@ int main(){
 			else{
 				// create a new tree if one does not exist
 				if(tree){
-					//TODO: if a tree already exists, delete it and make a new one
-				}else{
-					tree = new RBTree();
+					//if a tree already exists, delete it
+					delete tree;
 				}
+
+				// create a new tree for read-in
+				tree = new RBTree();
 
 				// pull RBTree data from file
 				while (infile.good() && !infile.eof() ){
@@ -184,14 +192,14 @@ int main(){
 				cout << endl <<"No tree exists yet, you should make one first..." << endl;
 			}else {
 				if(key < 0){
-					cout << "Only delete positive integers please...(" << key << ")" << endl;
+					cout << endl <<"Only delete positive integers please...(" << key << ")" << endl;
 				}else {
 					int delKey = tree->RBTree::Delete(key);
 					if(delKey == -1){
-						cout << "No node containing the key \"" << key << "\" was found in the tree." << endl;
+						cout << endl <<"No node containing the key \"" << key << "\" was found in the tree." << endl;
 					}else if ( delKey != key){
 						// this should never happen
-						cout << "A node containing data value \"" << delKey << "\" was found in the tree." << endl;
+						cout << endl << "A node containing data value \"" << delKey << "\" was found in the tree." << endl;
 						cout << "This node should not have been deleted from the tree" << endl;
 					}else{
 						cout << endl <<"A node with the value \"" << key << "\" has been deleted from the tree" << endl;
@@ -203,8 +211,7 @@ int main(){
 		case 'S':
 			cout << endl <<"Stopping the Red-Black Tree program..." << endl;
 			continueFlag = 0;
-			// clean everything up here
-			delete tree;
+
 			break;
 
 		default:
@@ -215,5 +222,9 @@ int main(){
 
 	// goodbye message
 	cout << endl << endl << "Thanks for using Red-Black Trees! Goodbye!" << endl << endl;
+
+	// clean everything up here
+	delete tree;
+
 	return 0;
 }
