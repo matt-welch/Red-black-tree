@@ -158,7 +158,7 @@ int main(){
 				if(key < 0){
 					cout << "Only delete positive integers please...(" << key << ")" << endl;
 				}else {
-					RBNode *delNode =tree->RBTree::Delete(key);
+					RBNode *delNode = tree->RBTree::Delete(key);
 					if(!delNode || delNode->GetKey() != key)
 						cout << "An error occurred while deleting \"" << key << "\"." << endl;
 					else
