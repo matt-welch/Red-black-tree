@@ -498,34 +498,18 @@ void RBTree::RBWrite(){
 
 // write out the current red-black tree to the screen in a pre-order format
 void RBTree::Write(RBNode *myRoot){
-	/*TODO: this was causing seg-faults so some functionality was brought up
-	 * from called functions */
-
-	// base case
-	// tree is empty
+	// base case: tree is empty
 	if(myRoot == this->_nil) {
 		return;
 	}
-	//print root
+
+	//print semicolon only after root
 	if(myRoot != this->_root){
 		cout << ";" << endl;
 	}
 
-	// following section should be in RBNode::ToString()
-	Color myColor = myRoot->GetColor();
-	char myColorChar;
-	int myKey = myRoot->GetKey();
-	if(myColor == RED){
-		myColorChar = 'r';
-	}else{
-		myColorChar = 'b';
-	}
-	cout << myColorChar;
-	cout << ", ";
-	cout << myKey;
-	// end ToString
-
-	myRoot->ToString();
+	// print myRoot
+	cout << myRoot->ToString();
 	//recursively print left
 	Write(myRoot->_lchild);
 	//recursively print right

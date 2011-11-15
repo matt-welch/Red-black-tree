@@ -56,9 +56,9 @@ int main(){
 	RBTree* tree = new RBTree();
 	ifstream infile;
 	string inFileName = "RBinput.txt";
-	int maxNodes = 100;
-	Color colors[maxNodes];
-	int data[maxNodes];
+	int maxNodes = 100;  // read in up to 100 nodes stored in the text input file
+	Color colors[100];
+	int data[100];
 	int key;
 	int numNodes = 0;
 	string token;
@@ -185,6 +185,13 @@ int main(){
 			// delete the node with data value matching the integer key 'n'
 			cin >> key;
 
+			// make sure tree is not NULL
+			if(tree == NULL){
+				cout << endl <<"No tree exists yet, you should make one first..." << endl;
+				break;
+			}
+
+			// check that tree is valid (instantiated)
 			if(!tree->RBTree::IsValid()){
 				cout << endl <<"No tree exists yet, you should make one first..." << endl;
 			}else {
