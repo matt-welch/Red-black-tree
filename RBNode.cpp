@@ -3,6 +3,16 @@
  *
  *  Created on: Oct 23, 2011
  *      Author: mwelch
+ *
+ *  RBNode has the following member variables:
+ *  Public:
+ *  	_parent		pointer to parent node in the RB tree
+ *  	_lchild 	pointer to the left-child node in the RB tree
+ *  	_rchild 	pointer to the right-child node in the RB tree
+ *	Protected:
+ *		_key		integer data value of the node
+ *		_color		enum Color value of the node (RED or BLACK)
+ *		_name		enum Name value of the node (NIL or DATA)
  */
 
 #include "RBNode.hpp"
@@ -18,6 +28,7 @@ using std::string;
 using std::stringstream;
 using std::stringbuf;
 
+// RBNode constructor
 // create an empty RBNode
 RBNode::RBNode(){
 	// new nodes are always RED by convention
@@ -25,20 +36,25 @@ RBNode::RBNode(){
 	_color = RED;
 }
 
+// RBNode constructor
 // create a RBNode with the supplied int data value
+/* data bearing nodes get BLACK because they're set
+ * to RED @ end of RBInsert algorithm */
 RBNode::RBNode(int key){
 	_key 	= key;
 	_color 	= BLACK;
 	_name  	= DATA;
 }
 
-// create a NIL RBNode
+// RBNode constructor
+// Used only to create a NIL RBNode
 RBNode::RBNode(Name pNilName){
 	_key 	= -1;
 	_color 	= BLACK;
 	_name 	= NIL;
 }
 
+// RBNode constructor
 // create a RBNode with the supplied int data value and Color color value
 RBNode::RBNode(int key, Color pColor){
 	_key = key;
@@ -46,6 +62,7 @@ RBNode::RBNode(int key, Color pColor){
 	_name  	= DATA;
 }
 
+// RBNode constructor
 // create a RBNode with the supplied data, parent, lchild, rchild, pColor references
 RBNode::RBNode(int data, RBNode *parent, RBNode *lchild, RBNode *rchild, Color pColor){
 	_key 	= data;
@@ -58,7 +75,7 @@ RBNode::RBNode(int data, RBNode *parent, RBNode *lchild, RBNode *rchild, Color p
 
 //RBNode destructor
 RBNode::~RBNode(){
-	// free here??
+	// no deletes necessary, no members are pointers
 }
 
 //swap colors between two nodes
@@ -68,6 +85,7 @@ void RBNode::ColorSwap(RBNode *y) {
 	y->_color = tempColor;
 }
 
+// accessor method for _color member variable
 Color RBNode::GetColor(){
 	return _color;
 }
@@ -77,7 +95,7 @@ int RBNode::GetKey(){
 	return this->_key;
 }
 
-// set method for _color
+// mutator method for _color member variable
 void RBNode::SetColor(Color newColor){
 	if(this->_name == NIL){
 		// _nil node should never change his color
@@ -87,10 +105,13 @@ void RBNode::SetColor(Color newColor){
 		{_color = newColor;}
 }
 
+// mutator method for _key member variable
 void RBNode::SetKey(int pKey){
 	_key = pKey;
 }
 
+// String output method for RBNode
+// produces output describing the node contents (e.g. "r, 10")
 string RBNode::ToString(){
 	/*  stringbuf sb;
   string mystr;

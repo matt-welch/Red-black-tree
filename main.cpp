@@ -6,18 +6,18 @@
  *
  * All Red-Black Tree methods, when possible, are adapted from pseudocode provided in
  * _Introduction_to_Algorithms_ (Cormen, Leiserson, Rivest & Stein)
+ *
+ * Some code-conventions taken from CSE220: Programming from Computer Engineering
+ * and from C++ Programming Practicum (Fall 11)
+ *
  ********************************************************************************************/
-
-
 
 /*
  * main.cpp
  *
  *  Created on: Oct 11, 2011
  *      Author: mwelch
- *
- * 6. You should implement a main function which takes the following commands from the key-board:
- *
+
  * C	create an empty tree (RBTree())
  * R	read in the tree stored in RBinput.txt, then wait for input
  * W	write the current tree to the screen in pre-order format (root, left, right)
@@ -29,12 +29,10 @@
  * 		If there is no node with data field equal to n, the program prints ”no such node in the tree”
  * 		and waits for the next command.
  * S	stop program
-
  */
-//#define DEBUG
 
-// TODO comment everything
-// TODO clean up output
+// uncomment following #define to enable debug printing during tree-read
+//#define DEBUG
 
 #include "RBTree.hpp"
 #include <stdlib.h>
@@ -94,12 +92,6 @@ int main(){
 			break;
 
 		case 'R': // read in a RBTree from RBinput.txt
-			//initialize color and data arrays
-			for(int i=0;i<maxNodes;++i){
-				colors[i]=RED;
-				data[i]=-1;
-			}
-
 			// use a char instead
 			infile.open((char*)inFileName.c_str()); //2nd arg: ifstream::in
 
@@ -107,14 +99,19 @@ int main(){
 				cout << endl <<"An error occurred while reading from the file \""
 						<< inFileName << "\"." << endl;}
 			else{
-				// create a new tree if one does not exist
+				//if a tree already exists, delete it
 				if(tree){
-					//if a tree already exists, delete it
 					delete tree;
 				}
 
-				// create a new tree for read-in
+				// create a new tree
 				tree = new RBTree();
+
+				//initialize color and data arrays
+				for(int i=0;i<maxNodes;++i){
+					colors[i]=RED;
+					data[i]=-1;
+				}
 
 				// pull RBTree data from file
 				while (infile.good() && !infile.eof() ){
@@ -145,14 +142,14 @@ int main(){
 				int index = tree->RBTree::RBInsertFromList(data, colors, numNodes);
 
 				if(index < numNodes){
-					cout << "Some nodes were lost during read..." << endl;
+					cout << "Some nodes were lost during read...not good" << endl;
 					exit(1);
 				}
 			}
 
 			break;
 
-		case 'W': // write out a RBTree to the screen in pre-order
+		case 'W': // write out a RBTree to the screen in pre-order formats
 			if(tree == NULL){
 				cout << endl <<"No tree exists yet, you should make one first..." << endl;
 			}else {
@@ -185,7 +182,7 @@ int main(){
 			break;
 
 		case 'D':// input: D n
-			// delete the node with data value matching 'n'
+			// delete the node with data value matching the integer key 'n'
 			cin >> key;
 
 			if(!tree->RBTree::IsValid()){
