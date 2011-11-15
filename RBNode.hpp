@@ -1,9 +1,13 @@
-/*
- * RBNode.h
- *
- *  Created on: Oct 23, 2011
- *      Author: mwelch
- */
+/*******************************************************************************
+ * FILENAME:	RBNode.hpp
+ * DESCRIPTION:	Red-Black Tree Node Class Definition
+ * AUTHOR: 		James Matthew Welch [JMW]
+ * SCHOOL:		Arizona State University
+ * CLASS:		CSE310::Data Structures and Algorithms
+ * INSTRUCTOR:	Dr. Guoliang Xue
+ * SECTION:		71409
+ * TERM:		Fall 2011
+******************************************************************************/
 
 #ifndef __RBNODE_H__
 #define __RBNODE_H__
@@ -11,7 +15,6 @@
 typedef enum {RED, BLACK} Color;
 typedef enum {NIL, DATA} Name;
 #include <string>
-#include <cstring>
 #include <sstream>
 using std::stringstream;
 using std::string;

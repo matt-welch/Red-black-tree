@@ -1,9 +1,13 @@
-/*
- * DLNode.h
- *
- *  Created on: Oct 26, 2011
- *      Author: mwelch
- */
+/*******************************************************************************
+ * FILENAME:	DLNode.hpp
+ * DESCRIPTION:	Doubly-Linked List Node Class Definition
+ * AUTHOR: 		James Matthew Welch [JMW]
+ * SCHOOL:		Arizona State University
+ * CLASS:		CSE310::Data Structures and Algorithms
+ * INSTRUCTOR:	Dr. Guoliang Xue
+ * SECTION:		71409
+ * TERM:		Fall 2011
+ ******************************************************************************/
 
 #ifndef __DLNODE_H__
 #define __DLNODE_H__

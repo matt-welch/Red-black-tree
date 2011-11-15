@@ -1,9 +1,13 @@
-/*
- * DLList.h
- *
- *  Created on: Oct 26, 2011
- *      Author: mwelch
- */
+/*******************************************************************************
+ * FILENAME:	DLList.hpp
+ * DESCRIPTION:	Doubly-Linked List Class Definition
+ * AUTHOR: 		James Matthew Welch [JMW]
+ * SCHOOL:		Arizona State University
+ * CLASS:		CSE310::Data Structures and Algorithms
+ * INSTRUCTOR:	Dr. Guoliang Xue
+ * SECTION:		71409
+ * TERM:		Fall 2011
+ ******************************************************************************/
 
 #ifndef __DLLIST_H__
 #define __DLLIST_H__

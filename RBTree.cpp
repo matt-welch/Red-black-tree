@@ -1,25 +1,46 @@
-/* Red Black Tree
- * This source code file comprises the implementation of a RedBlack Binary tree.
+/*******************************************************************************
+ * FILENAME:	RBTree.cpp
+ * DESCRIPTION:	Red-Black Tree Member Function Definitions
+ * AUTHOR: 		James Matthew Welch [JMW]
+ * SCHOOL:		Arizona State University
+ * CLASS:		CSE310::Data Structures and Algorithms
+ * INSTRUCTOR:	Dr. Guoliang Xue
+ * SECTION:		71409
+ * TERM:		Fall 2011
+ ******************************************************************************/
+
+/* This source code file comprises the implementation of a Red Black Binary tree.
  *
  * RBNode Members
  * 		parent	(ptr to parent node)
  * 		lchild	(ptr to left node)
  * 		rchild	(ptr to right node)
- * 		data	(int)
- * 		color (enum/char)
+ * 		data	(integer key of the node)
+ * 		color 	(enum describing the color of the node (RED/BLACK))
+ * 		name	(enum describing the type fo node (DATA/NIL))
  *
  * RedBlack Tree Operations:
- * 		RB-Fixup
- * 		rotate
- * 		colorSwap
- *		RBWrite (write out the current red-black tree to the screen, where the tree is stored in a pre-order format)
- * 		RBread (read in a red-black tree from a file named RBinput.txt, where the tree is stored in a pre-order format)
- *		RBinsert (insert a new node with the data field given as a parameter of the function and perform the fix-up if necessary)
- *		RBdelete (delete the node whose data field matches the data given as a parameter of the function, and perform the fix-up if necessary)
- *				Maintain a linked list to hold deleted nodes (re-use memory)
+ *		RBWrite:	write out the current red-black tree to the screen in a
+ *					pre-order format
+ * 		RBread:		read in a red-black tree from a file named RBinput.txt,
+ * 					where the tree is stored in a pre-order format
+ *		RBinsert: 	insert a new node with the data field given as a parameter
+ *					of the function and perform the fix-up if necessary
+ *		RBdelete:	delete the node whose data field matches the data given as
+ *					a parameter of the function, and perform the fix-up if necessary)
+ *
+ * RedBlack Tree Support Functions:
+ * 		RB-Insert-Fixup
+ * 		RB_Delete-Fixup
+ * 		Left-Rotate
+ * 		Right-Rotate
+ * 		RBSearch
+ *		RBTransplant
+ *		RBSuccessor
+ *		TreeMax
+ *		TreeMin
+ * 		Garbage collection in a Doubly-Linked List
  */
-
-#define DEBUG
 
 #include "RBTree.hpp"
 #include "DLList.hpp"
@@ -347,20 +368,7 @@ void RBTree::InsertFixup(RBNode *z){
 // left rotation of a parent-child backbone
 // based on pseudocode for RBLeftRotate from _Introduction_to_Algorithms_
 void RBTree::LeftRotate(RBNode *x){
-/*LeftRotate(x) from _Introduction_to_Algorithms_
- * LEFT-ROTATE(T,x) // T is tree, x is trouble-node
-	1 y = x.right		//set y
-	2 x.right=y.left	//turn y's left subtree into x's right subtree
-	3 if y.left != T:nil
-	4     y.left.p=x
-	5 y.p=x.p			// link x's parent to y
-	6 if x.p == T.nil
-	7     T.root = y
-	8 elseif x == x.p.left
-	9     x.p.left = y
-	10 else x.p.right = y
-	11 y.left = x		// put x on y's left
-	12 x.p = y */
+/*LeftRotate(x) from _Introduction_to_Algorithms_ */
 	RBNode *y = x->_rchild;
 	x->_rchild = y->_lchild; 			// hand beta off to x
 	if(y->_lchild != _nil){				// check for leaf
@@ -378,26 +386,25 @@ void RBTree::LeftRotate(RBNode *x){
 
 	// color swap (top stays same color, bottom stays same color
 	//x->ColorSwap(y);
+	 /* LEFT-ROTATE(T,x) // T is tree, x is trouble-node
+		1 y = x.right		//set y
+		2 x.right=y.left	//turn y's left subtree into x's right subtree
+		3 if y.left != T:nil
+		4     y.left.p=x
+		5 y.p=x.p			// link x's parent to y
+		6 if x.p == T.nil
+		7     T.root = y
+		8 elseif x == x.p.left
+		9     x.p.left = y
+		10 else x.p.right = y
+		11 y.left = x		// put x on y's left
+		12 x.p = y */
 }
 
 // right (clockwise) rotation of a parent-child backbone
 // based on pseudocode for RBRightRotate from _Introduction_to_Algorithms_
 void RBTree::RightRotate(RBNode *x){
-/* based on Left-Rotate from _Introduction_to_Algorithms_
-RIGHT-ROTATE(T,x) // T is tree, x is trouble-node
-	1 y = x.left		//set y
-	2 x.left=y.right	//turn y's right subtree into x's left subtree
-	3 if y.right != T.nil
-	4     y.right.p=x
-	5 y.p=x.p			// link x's parent to y
-	6 if x.p == T.nil
-	7     T.root = y
-	8 else if x == x.p.right
-	9     x.p.right = y
-	10 else x.p.left = y
-	11 y.right = x		// put x on y's right
-	12 x.p = y
- */
+/* based on Left-Rotate from _Introduction_to_Algorithms_ */
 	RBNode *y = x->_lchild;						//1 y = x.left
 	x->_lchild = y->_rchild; 			//2 x.left = y.right 	//hand beta off to x
 	if(y->_rchild != _nil){				//3 if y.right != T.nil // check for leaf
@@ -415,6 +422,21 @@ RIGHT-ROTATE(T,x) // T is tree, x is trouble-node
 
 	// color swap (top stays same color, bottom stays same color
 	//x->ColorSwap(y);
+
+	/*RIGHT-ROTATE(T,x) // T is tree, x is trouble-node
+	1 y = x.left		//set y
+	2 x.left=y.right	//turn y's right subtree into x's left subtree
+	3 if y.right != T.nil
+	4     y.right.p=x
+	5 y.p=x.p			// link x's parent to y
+	6 if x.p == T.nil
+	7     T.root = y
+	8 else if x == x.p.right
+	9     x.p.right = y
+	10 else x.p.left = y
+	11 y.right = x		// put x on y's right
+	12 x.p = y
+ */
 }
 
 // iterative tree search
@@ -433,14 +455,6 @@ RBNode* RBTree::RBSearch(RBNode *traverse, int key){
 // find the successor (next in sequence) of a given node
 // pseudocode from _Introduction_to_Algorithms_
 RBNode* RBTree::RBSuccessor(RBNode *x){
-/*Successor(x)
-if x.right != nil then
-    return Tree-Minimum(x.right)      //e.g., 15 --> 17
-y := x.parent			    // e.g., node 13
-while y != nil and x = y.right do  // find a "right" parent
-     x := y
-     y := y.parent
-return y	*/
 	if(x->_rchild != this->_nil){ return TreeMin(x->_rchild); }
 	RBNode* y = x->_parent;
 	while(y != this->_nil && x == y->_rchild){
@@ -448,6 +462,14 @@ return y	*/
 		y = y->_parent;
 	}
 	return y;
+	/*Successor(x)
+	if x.right != nil then
+	    return Tree-Minimum(x.right)      //e.g., 15 --> 17
+	y := x.parent			    // e.g., node 13
+	while y != nil and x = y.right do  // find a "right" parent
+	     x := y
+	     y := y.parent
+	return y	*/
 }
 
 // based on BST-Transplant, but assign v.p unconditionally
@@ -467,28 +489,27 @@ RBNode* RBTree::RBTransplant(RBNode *u,RBNode *v){
 // TreeMin returns the minimum key of a subtree
 // pseudocode from _Introduction_to_Algorithms_
 RBNode* RBTree::TreeMin(RBNode *x){
-
-/*	Tree-Minimum(root)
-	 while root != nil and root.left != nil do
-	       root = root.left
-	 return root */
 	while(x != this->_nil && x->_lchild != this->_nil){
 		x = x->_lchild;
 	}
 	return x;
+	/*Tree-Minimum(root)
+		while root != nil and root.left != nil do
+			root = root.left
+		return root */
 }
 
 // TreeMax returns the maximum key from a subtree
 // pseudocode from _Introduction_to_Algorithms_
 RBNode* RBTree::TreeMax(RBNode *x){
-/*Tree-Maximum(root)
- while root != nil and root.right != nil do
-       root = root.right
- return root */
 	while(x != this->_nil && x->_rchild != this->_nil){
 		x = x->_rchild;
 	}
 	return x;
+	/*Tree-Maximum(root)
+	 while root != nil and root.right != nil do
+	       root = root.right
+	 return root */
 }
 
 // write out the current red-black tree to the screen, in a pre-order format

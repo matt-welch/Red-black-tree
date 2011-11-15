@@ -1,10 +1,15 @@
-/*
- * RBNode.cpp
- *
- *  Created on: Oct 23, 2011
- *      Author: mwelch
- *
- *  RBNode has the following member variables:
+/*******************************************************************************
+ * FILENAME:	RBNode.cpp
+ * DESCRIPTION:	Red-Black Tree Node Member Function Definitions
+ * AUTHOR: 		James Matthew Welch [JMW]
+ * SCHOOL:		Arizona State University
+ * CLASS:		CSE310::Data Structures and Algorithms
+ * INSTRUCTOR:	Dr. Guoliang Xue
+ * SECTION:		71409
+ * TERM:		Fall 2011
+ ******************************************************************************/
+
+/*  RBNode has the following member variables:
  *  Public:
  *  	_parent		pointer to parent node in the RB tree
  *  	_lchild 	pointer to the left-child node in the RB tree
