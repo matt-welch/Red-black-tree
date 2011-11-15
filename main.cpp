@@ -56,11 +56,11 @@ int main(){
 	RBTree* tree = new RBTree();
 	ifstream infile;
 	string inFileName = "RBinput.txt";
-	int maxNodes = 100;  // read in up to 100 nodes stored in the text input file
-	Color colors[100];
-	int data[100];
+	const int maxNodes = 1000;  // read in up to 1000 nodes stored in the text input file
+	Color colors[maxNodes];
+	int data[maxNodes];
 	int key;
-	int numNodes = 0;
+	int numNodes;
 	string token;
 
 	cout << endl << ":::Red-Black Tree:::" << endl;
@@ -92,6 +92,9 @@ int main(){
 			break;
 
 		case 'R': // read in a RBTree from RBinput.txt
+			// set numNodes (already read in) to 0
+			numNodes = 0;
+
 			// use a char instead
 			infile.open((char*)inFileName.c_str()); //2nd arg: ifstream::in
 
@@ -119,7 +122,6 @@ int main(){
 					infile >> token;
 					if(!token.empty()) {
 						colors[numNodes] = ( (token[0] == 'r') ? RED : BLACK );
-
 #ifdef DEBUG
 						cout << "colorStr: " << token[0];
 						cout << "||char: " << colors[numNodes];
@@ -228,7 +230,7 @@ int main(){
 	cout << endl << endl << "Thanks for using Red-Black Trees! Goodbye!" << endl << endl;
 
 	// clean everything up here
-	delete tree;
+	delete(tree);
 
 	return 0;
 }
