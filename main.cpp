@@ -1,23 +1,25 @@
-/********************************************************************************************
- * Red-Black Tree Driver:
- * AUTHOR: 	James Matthew Welch [JMW]
- * CLASS:	CSE310
- * SECTION:	71409
- *
- * All Red-Black Tree methods, when possible, are adapted from pseudocode provided in
+/*******************************************************************************
+ * FILENAME:	main.cpp
+ * DESCRIPTION:	Red-Black Tree Driver console program
+ * AUTHOR: 		James Matthew Welch [JMW]
+ * SCHOOL:		Arizona State University
+ * CLASS:		CSE310::Data Structures and Algorithms
+ * INSTRUCTOR:	Dr. Guoliang Xue
+ * SECTION:		71409
+ * TERM:		Fall 2011
+ ******************************************************************************/
+
+/*******************************************************************************
+ *  All Red-Black Tree methods, when possible, are adapted from pseudocode provided in
  * _Introduction_to_Algorithms_ (Cormen, Leiserson, Rivest & Stein)
  *
- * Some code-conventions taken from CSE220: Programming from Computer Engineering
- * and from C++ Programming Practicum (Fall 11)
- *
- ********************************************************************************************/
+ * Some code-conventions taken from:
+ * 		CSE220: Programming from Computer Engineering (Fall 2011)
+ * 		CSE240: Introduction to Programming Languages (Fall 2011)
+ * 		C++ Programming Practicum (Fall 2011)
+ ******************************************************************************/
 
-/*
- * main.cpp
- *
- *  Created on: Oct 11, 2011
- *      Author: mwelch
-
+/* Red Black Tree Driver Program User Commands:
  * C	create an empty tree (RBTree())
  * R	read in the tree stored in RBinput.txt, then wait for input
  * W	write the current tree to the screen in pre-order format (root, left, right)
@@ -31,13 +33,10 @@
  * S	stop program
  */
 
-// uncomment following #define to enable debug printing during tree-read
-//#define DEBUG
-
 #include "RBTree.hpp"
-#include <stdlib.h>
-#include <stdint.h>
+#include <stdlib.h> // atoi(), exit()
 #include <string>
+using std::string;
 
 #include <iostream>
 using std::cout;

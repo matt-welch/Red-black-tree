@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * FILENAME:	RBTree.hpp
+ * DESCRIPTION:	Red-Black Tree Class Definition
+ * AUTHOR: 		James Matthew Welch [JMW]
+ * SCHOOL:		Arizona State University
+ * CLASS:		CSE310::Data Structures and Algorithms
+ * INSTRUCTOR:	Dr. Guoliang Xue
+ * SECTION:		71409
+ * TERM:		Fall 2011
+******************************************************************************/
+
 /* Red Black Tree
  * This source code file comprises the implementation of a RedBlack Binary tree.
  *

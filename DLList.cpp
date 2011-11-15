@@ -1,13 +1,15 @@
-/*
- * DLList.cpp
- *
- *  Created on: Oct 26, 2011
- *      Author: mwelch
- */
+/*******************************************************************************
+ * FILENAME:	DLList.cpp
+ * DESCRIPTION:	Doubly-Linked List Member Function Definitions
+ * AUTHOR: 		James Matthew Welch [JMW]
+ * SCHOOL:		Arizona State University
+ * CLASS:		CSE310::Data Structures and Algorithms
+ * INSTRUCTOR:	Dr. Guoliang Xue
+ * SECTION:		71409
+ * TERM:		Fall 2011
+ ******************************************************************************/
 
 #include "DLList.hpp"
-
-/* Doubly Linked List to hold "deleted" values */
 
 // Doubly Linked List to hold "deleted" values: function definitions
 DLList::DLList(){

@@ -1,9 +1,13 @@
-/*
- * DLNode.cpp
- *
- *  Created on: Oct 26, 2011
- *      Author: mwelch
- */
+/*******************************************************************************
+ * FILENAME:	DLNode.cpp
+ * DESCRIPTION:	Doubly-Linked List Node Member Function Definitions
+ * AUTHOR: 		James Matthew Welch [JMW]
+ * SCHOOL:		Arizona State University
+ * CLASS:		CSE310::Data Structures and Algorithms
+ * INSTRUCTOR:	Dr. Guoliang Xue
+ * SECTION:		71409
+ * TERM:		Fall 2011
+ ******************************************************************************/
 
 #include "DLNode.hpp"
 
