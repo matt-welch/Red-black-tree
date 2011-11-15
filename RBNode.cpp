@@ -26,7 +26,6 @@
 
 using std::string;
 using std::stringstream;
-using std::stringbuf;
 
 // RBNode constructor
 // create an empty RBNode
@@ -71,7 +70,7 @@ RBNode::RBNode(int data, RBNode *parent, RBNode *lchild, RBNode *rchild, Color p
 	_rchild = rchild;
 	_color 	= pColor;
 	_name  	= DATA;
-};
+}
 
 //RBNode destructor
 RBNode::~RBNode(){
@@ -110,25 +109,13 @@ void RBNode::SetKey(int pKey){
 	_key = pKey;
 }
 
-// String output method for RBNode
-// produces output describing the node contents (e.g. "r, 10")
+// create a string representation of the node (e.g. r,10 )
 string RBNode::ToString(){
-	/*  stringbuf sb;
-  string mystr;
-
-  sb.sputn ("Sample string",13);
-  mystr=sb.str();
-
-  cout << mystr;*/
-	stringbuf buffer;
-	string tostring;
-	char number[4] = "100";
+	stringstream buffer;
 	if(_color == RED)
-		buffer.sputn("r, ", 3);
+		buffer << 'r';
 	else
-		buffer.sputn("b, ", 3);
-	sprintf(number, "%d", _key);
-	buffer.sputn(number, 2);
-	tostring = buffer.str();
-	return tostring;
+		buffer << 'b';
+	buffer << ", " << _key;
+	return buffer.str();
 }
