@@ -20,6 +20,11 @@ DLList::DLList(){
 // default destructor for doubly linked list
 DLList::~DLList(){
 	// delete node by node, but this should be done by RBTree
+	while(!this->IsEmpty()){
+		delete(Remove());
+	}
+	delete _head;
+	delete _tail;
 }
 
 // checks to see if the list is empty

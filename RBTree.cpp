@@ -61,6 +61,7 @@ RBTree::~RBTree(){
 	delete(_nil);
 }
 
+// RBTree destructor helper, recursively deletes each data-bearing node in the tree
 void RBTree::RBFreeTree(RBNode *myRoot){
 	// recursively traverse the tree, deleting nodes on the way down
 	if(myRoot != _nil) {
@@ -73,6 +74,7 @@ void RBTree::RBFreeTree(RBNode *myRoot){
 	}
 }
 
+// Insert helper function for building from a pre-order list of keys/colors
 int RBTree::RBInsertFromList(int list[], Color colors[], const int numNodes){
 	_size = 0;
 	_root = new RBNode(list[_size], _nil, _nil, _nil, BLACK);
@@ -81,16 +83,17 @@ int RBTree::RBInsertFromList(int list[], Color colors[], const int numNodes){
 		BSTInsert(list[_size], colors[_size]);
 		_size++;
 	}
-//	_root->_parent = this->_nil;
 	_valid = (!0);
 	return _size;
 }
 
+// RBNode instantiation helper function
 RBNode* RBTree::NewRBNode(Name pNilName){
 	RBNode* z = new RBNode(pNilName);
 	return z;
 }
 
+// RBNode instantiation helper function
 RBNode* RBTree::NewRBNode(int key){
 	RBNode* z = new RBNode(key);
 	z->_lchild = _nil;
@@ -99,6 +102,7 @@ RBNode* RBTree::NewRBNode(int key){
 	return z;
 }
 
+// RBNode instantiation helper function
 RBNode* RBTree::NewRBNode(int pKey, Color pColor){
 	RBNode* z = new RBNode(pKey, pColor);
 	z->_lchild = _nil;
@@ -107,6 +111,8 @@ RBNode* RBTree::NewRBNode(int pKey, Color pColor){
 	return z;
 }
 
+// Binary Search Tree insertion for building the tree
+// based on pseudocode from _Introduction_to_Algorithms_
 void RBTree::BSTInsert(int key, Color color){
 	RBNode* z = NewRBNode(key, color);
 	RBNode* y = this->_nil;				// 1 y = NIL
@@ -127,6 +133,7 @@ void RBTree::BSTInsert(int key, Color color){
 	z->_rchild = this->_nil;			// set rchild as nil
 }
 
+// helper function that calls RBDelete
 int RBTree::Delete(int key){
 	RBNode *delNode = RBDelete(key);
 	if(delNode){
@@ -137,11 +144,13 @@ int RBTree::Delete(int key){
 	return -1;
 }
 
+// RecycleNode saves deleted nodes to the Doubly-Linked List "garbage collector"
 void RBTree::RecycleNode(RBNode *x){
 	_store->Add(x);
 }
 
 // delete a node from the tree given its data
+// based on pseudocode from _Introduction_to_Algorithms_
 RBNode* RBTree::RBDelete(int key){
 	RBNode *z = RBSearch(this->_root, key);
 	RBNode *x;
@@ -177,6 +186,8 @@ RBNode* RBTree::RBDelete(int key){
 	return z;
 }
 
+// Delete Fixup after deleting a node from the tree
+// based on outer loop of RBDeleteFixup function from _Introduction_to_Algorithms_
 RBNode* RBTree::DeleteFixupSmall(RBNode *x){
 	while(x != _root && x->GetColor() == BLACK){//1
 		if(x == x->_parent->_lchild){			//2 if x is left child of it's parent
@@ -189,13 +200,15 @@ RBNode* RBTree::DeleteFixupSmall(RBNode *x){
 	return x;
 }
 
+// Delete fixup if the "trouble-node" is the left child of its parent
+// based on "left child" inner loop of RBDeleteFixup from _Introduction_to_Algorithms_
 RBNode* RBTree::DeleteFixupLeft(RBNode *x){
 	RBNode *w;
 	w = x->_parent->_rchild;				//3
 	if(w->GetColor() == RED){				//4
 		w->SetColor(BLACK);					//5 case 1
 		x->_parent->SetColor(RED);			//6 case 1
-		LeftRotate(x->_parent);		//7 case 1
+		LeftRotate(x->_parent);				//7 case 1
 		w = x->_parent->_rchild;}			//8 case 1
 	if(w->_lchild->GetColor() == BLACK &&		//9		if(w.left.color == BLACK && w.right.color == BLACK)
 			w->_rchild->GetColor() == BLACK){
@@ -217,6 +230,8 @@ RBNode* RBTree::DeleteFixupLeft(RBNode *x){
 	return x;
 }
 
+// Delete fixup if the "trouble-node" is the right child of its parent
+// based on "right child" inner loop of RBDeleteFixup from _Introduction_to_Algorithms_
 RBNode* RBTree::DeleteFixupRight(RBNode *x){
 	RBNode *w;
 	w = x->_parent->_lchild;				//3		w = x.p.left
@@ -248,6 +263,7 @@ RBNode* RBTree::DeleteFixupRight(RBNode *x){
 }
 
 // insert a new node into the tree given its data
+// pseudocode from _Introduction_to_Algorithms_
 RBTree* RBTree::RBInsert(int key){
 
 	if(_root != _nil && this->RBSearch(_root, key) != _nil){
@@ -284,6 +300,7 @@ RBTree* RBTree::RBInsert(int key){
 }
 
 // fixup the tree after insertion
+// pseudocode from _Introduction_to_Algorithms_
 void RBTree::InsertFixup(RBNode *z){
 	RBNode *y;
 	while(z->_parent != _nil && z->_parent->GetColor() == RED){			//1 while (z.p.color == RED) {
@@ -325,6 +342,7 @@ void RBTree::InsertFixup(RBNode *z){
 }
 
 // left rotation of a parent-child backbone
+// based on pseudocode for RBLeftRotate from _Introduction_to_Algorithms_
 void RBTree::LeftRotate(RBNode *x){
 /*LeftRotate(x) from _Introduction_to_Algorithms_
  * LEFT-ROTATE(T,x) // T is tree, x is trouble-node
@@ -360,6 +378,7 @@ void RBTree::LeftRotate(RBNode *x){
 }
 
 // right (clockwise) rotation of a parent-child backbone
+// based on pseudocode for RBRightRotate from _Introduction_to_Algorithms_
 void RBTree::RightRotate(RBNode *x){
 /* based on Left-Rotate from _Introduction_to_Algorithms_
 RIGHT-ROTATE(T,x) // T is tree, x is trouble-node
@@ -395,7 +414,8 @@ RIGHT-ROTATE(T,x) // T is tree, x is trouble-node
 	//x->ColorSwap(y);
 }
 
-// iterative tree search based on BST Iterative-Tree-Search(x,k);
+// iterative tree search
+// based on BST Iterative-Tree-Search(x,k) from _Introduction_to_Algorithms_
 RBNode* RBTree::RBSearch(RBNode *traverse, int key){
 	if(traverse == this->_nil){ return NULL; } // tree is empty
 
@@ -407,23 +427,10 @@ RBNode* RBTree::RBSearch(RBNode *traverse, int key){
 	return traverse;
 }
 
-// based on BST-Transplant, but assign v.p unconditionally
-RBNode* RBTree::RBTransplant(RBNode *u,RBNode *v){
-	if(u->_parent == this->_nil) {		//1: tree is empty
-		_root = v; 						//2: 	set new node to root
-	} else if(u == u->_parent->_lchild){//3: u is left child
-		u->_parent->_lchild = v;		//4: 	set v to lchild
-	} else {
-		u->_parent->_rchild = v;		//5: else set v to rchild
-	}
-	v->_parent = u->_parent;			//6: set parent
-	return v;
-}
-
 // find the successor (next in sequence) of a given node
+// pseudocode from _Introduction_to_Algorithms_
 RBNode* RBTree::RBSuccessor(RBNode *x){
-/*Successor pseudocode from _Introduction_to_Algorithms_
-Successor(x)
+/*Successor(x)
 if x.right != nil then
     return Tree-Minimum(x.right)      //e.g., 15 --> 17
 y := x.parent			    // e.g., node 13
@@ -440,7 +447,24 @@ return y	*/
 	return y;
 }
 
+// based on BST-Transplant, but assign v.p unconditionally
+// pseudocode from _Introduction_to_Algorithms_
+RBNode* RBTree::RBTransplant(RBNode *u,RBNode *v){
+	if(u->_parent == this->_nil) {		//1: tree is empty
+		_root = v; 						//2: 	set new node to root
+	} else if(u == u->_parent->_lchild){//3: u is left child
+		u->_parent->_lchild = v;		//4: 	set v to lchild
+	} else {
+		u->_parent->_rchild = v;		//5: else set v to rchild
+	}
+	v->_parent = u->_parent;			//6: set parent
+	return v;
+}
+
+// TreeMin returns the minimum key of a subtree
+// pseudocode from _Introduction_to_Algorithms_
 RBNode* RBTree::TreeMin(RBNode *x){
+
 /*	Tree-Minimum(root)
 	 while root != nil and root.left != nil do
 	       root = root.left
@@ -451,6 +475,8 @@ RBNode* RBTree::TreeMin(RBNode *x){
 	return x;
 }
 
+// TreeMax returns the maximum key from a subtree
+// pseudocode from _Introduction_to_Algorithms_
 RBNode* RBTree::TreeMax(RBNode *x){
 /*Tree-Maximum(root)
  while root != nil and root.right != nil do
@@ -462,23 +488,30 @@ RBNode* RBTree::TreeMax(RBNode *x){
 	return x;
 }
 
-// write out the current red-black tree to the screen, where the tree is stored in a pre-order format
+// write out the current red-black tree to the screen, in a pre-order format
+// helper function calls RBTree::Write
 void RBTree::RBWrite(){
 	cout << endl;
 	this->Write(_root);
 	cout << endl;
 }
 
-// write out the current red-black tree to the screen, where the tree is stored in a pre-order format
+// write out the current red-black tree to the screen in a pre-order format
 void RBTree::Write(RBNode *myRoot){
+	/*TODO: this was causing seg-faults so some functionality was brought up
+	 * from called functions */
+
 	// base case
+	// tree is empty
 	if(myRoot == this->_nil) {
 		return;
-	} // tree is empty
+	}
 	//print root
 	if(myRoot != this->_root){
 		cout << ";" << endl;
 	}
+
+	// following section should be in RBNode::ToString()
 	Color myColor = myRoot->GetColor();
 	char myColorChar;
 	int myKey = myRoot->GetKey();
@@ -490,11 +523,11 @@ void RBTree::Write(RBNode *myRoot){
 	cout << myColorChar;
 	cout << ", ";
 	cout << myKey;
+	// end ToString
+
 	myRoot->ToString();
 	//recursively print left
 	Write(myRoot->_lchild);
 	//recursively print right
 	Write(myRoot->_rchild);
 }
-
-
