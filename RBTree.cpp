@@ -155,7 +155,10 @@ RBNode* RBTree::RBDelete(int key){
 	RBNode *z = RBSearch(this->_root, key);
 	RBNode *x;
 
-	if(z == NULL){ return NULL; }// key is not found in tree
+	if(z == NULL || z == _nil){
+		// key is not found in tree
+		return NULL;
+	}
 
 	RBNode *y = z;						//1 temp pointer set to "trouble node"
 	Color yOrigColor = y->GetColor();	//2 preserve y orig color
